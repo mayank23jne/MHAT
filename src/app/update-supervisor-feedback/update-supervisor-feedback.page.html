@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+    <ion-title>Update Supervisior Feedback</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <p class="center theme_color clinic_head captial">{{feedback.patient_name}}</p>
+    <div class="form">
+	  <form name="form" id="p_form" (ngSubmit)="f.form.valid && patientFeedbackForm(f)" #f="ngForm" method="post">
+      <div class="single_field">
+        <div class="form_label">Supervisior Feedback</div>
+        <textarea [(ngModel)]="feedback.feedback_details" #des="ngModel" [ngClass]="{ 'is-invalid': f.submitted && des.invalid }" required   name="desc" rows="6" cols="35"   name="desc" placeholder="Enter feedback"></textarea>
+        <div *ngIf="f.submitted && des.invalid" class="invalid-feedback">
+          <div *ngIf="des.errors.required">Feedback is required</div>
+      </div>
+      </div>
+      <div class="single_field" style="text-align: center;">
+        <ion-button class="theme_btn" type="submit">
+           Update Feedback
+        </ion-button>
+      </div>
+    </form>
+    </div>
+  </div>
+</ion-content>

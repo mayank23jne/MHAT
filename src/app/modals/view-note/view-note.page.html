@@ -1,0 +1,22 @@
+<ion-content>
+  <h3 class="center theme_color">View Note</h3>
+  <ion-icon class="close_model" (click)="closeModal()" name="close"></ion-icon>
+  <div class="ion-padding">
+    <div class="model_dec" *ngIf="notes.description">{{notes.description}}</div> 
+    <div class="view_note_img_div" *ngIf="notes.imageName">
+      <p>Image</p>
+      <ion-img src="{{fileURI}}{{notes.imageName}}" class="ion-align-self-end imageName_div"></ion-img>
+    </div>  
+      <ion-row *ngIf="notes.fileName">
+        <ion-col size="6">
+         <p>Attachment</p>
+        </ion-col>
+        <ion-col size="2" >
+          <ion-img (click)="download(notes.fileName)" src="assets/images/attach.png" class="ion-align-self-end"></ion-img>
+        </ion-col>
+      </ion-row>
+      <audio controls class="recording_div" *ngIf="notes.audioName">
+        <source src="{{fileURI}}{{notes.audioName}}" type="audio/mpeg">
+      </audio>
+  </div>
+</ion-content>

@@ -1,0 +1,93 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+    <ion-title>Edit Clinician</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <div class="form edit_form_remove_label">
+	  <form name="form" id="p_form" (ngSubmit)="f.form.valid && doctorForm(f)" #f="ngForm" method="post">
+      <div class="single_field">
+        <div class="form_label">Full Name</div>
+        <input [(ngModel)]="doctor.full_name"  name="full_name" #f_name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && f_name.invalid }" required placeholder="Enter full name">
+        <div *ngIf="f.submitted && f_name.invalid" class="invalid-feedback">
+          <div *ngIf="f_name.errors.required">Full name is required</div>
+        </div>
+       </div>
+      <div class="single_field">
+        <div class="form_label">Username</div>
+        <input  [(ngModel)]="doctor.username"  name="user_name" #u_name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && u_name.invalid }" required placeholder="Enter unique username">
+        <div *ngIf="f.submitted && u_name.invalid" class="invalid-feedback">
+          <div *ngIf="u_name.errors.required">Username is required</div>
+        </div>
+      </div>
+      <div class="single_field">
+        <div class="form_label">Email</div>
+        <input  [(ngModel)]="doctor.email"  name="email" #email_id="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email_id.invalid }" required email placeholder="Enter unique email">
+        <div *ngIf="f.submitted && email_id.invalid" class="invalid-feedback">
+          <div *ngIf="email_id.errors.required">Email is required</div>
+          <div *ngIf="email_id.errors.email">Must be a valid email address</div>
+        </div>
+      </div>
+      <div class="single_field">
+        <div class="form_label">Age</div>
+        <input type="number" [(ngModel)]="doctor.age"    name="age" placeholder="Enter age" #ages="ngModel" [ngClass]="{ 'is-invalid': f.submitted && ages.invalid }" required>
+        <div *ngIf="f.submitted && ages.invalid" class="invalid-feedback">
+          <div *ngIf="ages.errors.required">Age is required</div>
+        </div>
+      </div>
+      <div class="single_field">
+        <div class="form_label">Gender</div>
+        <ion-item lines="none" class="login_role_select">
+          <ion-label class="role_label">Select Gender</ion-label>
+          <ion-select [(ngModel)]="doctor.gender" #genders="ngModel" [ngClass]="{ 'is-invalid': f.submitted && genders.invalid }" required   name="gender">
+              <ion-select-option value="male" >Male</ion-select-option>
+              <ion-select-option value="female" >Female</ion-select-option>
+              <ion-select-option value="other" >Other</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="f.submitted && genders.invalid" class="invalid-feedback">
+            <div *ngIf="genders.errors.required">Gender is required</div>
+        </div>
+      </div>
+      <div class="single_field">
+        <div class="form_label">Phone</div>
+        <input type="number" [(ngModel)]="doctor.phone"  #phone_no="ngModel" [ngClass]="{ 'is-invalid': f.submitted && phone_no.invalid }" required    name="phone" placeholder="Enter phone no">
+        <div *ngIf="f.submitted && phone_no.invalid" class="invalid-feedback">
+          <div *ngIf="phone_no.errors.required">Phone number is required</div>
+        </div>
+      </div>
+      <div class="single_field">
+        <div class="form_label">Aadhaar Number</div>
+        <input type="text" [(ngModel)]="doctor.adhaar"  #a_no="ngModel" [ngClass]="{ 'is-invalid': f.submitted && a_no.invalid }" required    name="ad_no" placeholder="Enter 16 digit adhaar no">
+        <div *ngIf="f.submitted && a_no.invalid" class="invalid-feedback">
+          <div *ngIf="a_no.errors.required">Adhaar number is required</div>
+        </div>
+      </div>
+      <div class="single_field">
+        <div class="form_label">Qualification</div>
+        <input [(ngModel)]="doctor.qualification" name="qualify" placeholder="Enter qualification" #oc="ngModel" [ngClass]="{ 'is-invalid': f.submitted && oc.invalid }" required>
+        <div *ngIf="f.submitted && oc.invalid" class="invalid-feedback">
+          <div *ngIf="oc.errors.required">Qualification is required</div>
+        </div>
+      </div>
+      <div class="single_field">
+        <div class="form_label">Address</div>
+        <textarea [(ngModel)]="doctor.address" rows="4" cols="35"   name="address" placeholder="Enter address" #add="ngModel" [ngClass]="{ 'is-invalid': f.submitted && add.invalid }" required></textarea>
+        <div *ngIf="f.submitted && add.invalid" class="invalid-feedback">
+          <div *ngIf="add.errors.required">Address is required</div>
+        </div>
+      </div>
+      <div class="single_field" style="text-align: center;">
+        <ion-button class="theme_btn" type="submit">
+           Update
+        </ion-button>
+      </div>
+    </form>
+    </div>
+  </div>
+</ion-content>

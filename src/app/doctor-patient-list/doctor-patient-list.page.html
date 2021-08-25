@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Patient List</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- <div class="patient_add_btn" routerLink="/add-patient"><ion-icon name="add-outline"></ion-icon></div> -->
+  <div class="ion-padding">
+    <!-- <p class="center theme_color clinic_head">{{clinic_name}}</p> -->
+    <ion-searchbar  placeholder="Search Patient or FileNo:" (keyup)="searchByKeyword($event)"></ion-searchbar>
+    <div class="single_field" style="display:none">
+      <ion-item>
+        <ion-label>From Date</ion-label>
+        <ion-datetime displayFormat="MMM DD, YYYY"  [(ngModel)]="from_date"  name="from_date" ></ion-datetime>
+      </ion-item>
+    </div>
+    <div class="single_field" style="display:none">
+      <ion-item>
+        <ion-label>To Date</ion-label>
+        <ion-datetime displayFormat="MMM DD, YYYY" [(ngModel)]="to_date"  name="to_date" ></ion-datetime>
+      </ion-item>
+    </div>
+    <ion-list *ngIf="patient_list.length > 0">
+      <ion-list-header>
+        Total Patient ({{patient_list.length}})
+      </ion-list-header>
+      <ion-item *ngFor="let patient of patient_list; let i = index">
+        <ion-avatar slot="start">          
+          <img src="assets/images/user.png">
+        </ion-avatar>
+        <ion-label>
+          <p>Sno. - {{i+1}}</p>
+          <h2 class="captial">{{patient.patient_name}} ({{patient.file_no}})</h2>
+          <h3>Clinic : {{patient.clinic_name}}</h3>
+          <p  class="captial"*ngIf="patient.full_name">Added By : {{patient.full_name}}</p>
+          <p class="captial" *ngIf="!patient.full_name">Added By : {{patient.username}}</p>
+          <h3>On Date : {{patient.entryDate | date :'MMM,dd yyyy'}}</h3>
+          <ion-icon routerLink="/patient-details/{{patient.id}}/{{patient.patient_id}}" class="patient_edit_icon" name="create-outline"></ion-icon>
+           <ion-button shape="round" fill="outline" color="danger" *ngIf="patient.sent_to_clinic==0">Pending</ion-button>
+          <ion-button shape="round"  fill="outline" color="success" *ngIf="patient.sent_to_clinic==1">Reviewed</ion-button> 
+        </ion-label>
+      </ion-item> 
+      <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>    
+    </ion-list>
+    <div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+  </div>
+  
+</ion-content>

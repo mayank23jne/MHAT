@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+    <ion-title>Investigation Results</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <p class="center theme_color clinic_head captial">{{patient_name.name}}</p>
+    <div class="form">
+	  <form name="form" id="p_form" (ngSubmit)="f.form.valid && patientTestForm(f)" #f="ngForm" method="post">
+      <div class="single_field">
+        <div class="form_label">Test Type</div>
+        <ion-item lines="none" class="login_role_select">
+          <ion-label class="role_label">Select Test Type</ion-label>
+          <ion-select [(ngModel)]="test" #tests="ngModel" [ngClass]="{ 'is-invalid': f.submitted && tests.invalid }" required   name="test">
+              <ion-select-option value="TSH" >TSH</ion-select-option>
+              <ion-select-option value="Haemoglobin" >Haemoglobin</ion-select-option>
+              <ion-select-option value="RBS" >RBS</ion-select-option>
+              <ion-select-option value="FBS" >FBS</ion-select-option>
+              <ion-select-option value="Lithium" >Lithium</ion-select-option>
+              <ion-select-option value="Sodium" >Sodium</ion-select-option>
+              <ion-select-option value="Potassium" >Potassium</ion-select-option>
+              <ion-select-option value="Creatinine" >Creatinine</ion-select-option>
+              <ion-select-option value="Others" >Others</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="f.submitted && tests.invalid" class="invalid-feedback">
+            <div *ngIf="tests.errors.required">Test type is required</div>
+        </div>
+      </div>
+      <div class="single_field">
+        <div class="form_label">Test Value</div>
+        <input  [(ngModel)]="test_level"  #test_levels="ngModel" name="test_level" placeholder="Enter test value">
+      </div> 
+      <div class="single_field">
+        <label>Attach Report</label>
+      </div>
+      <div class="single_field img_div">
+        <label for="file-input">          
+          <img src="assets/images/upload_icon.png"  class="logo_img"/>
+        </label>
+        <input id="file-input" type="file"  />
+      </div>     
+      <div class="single_field" style="text-align: center;">
+        <ion-button class="theme_btn" type="submit">
+           Add 
+        </ion-button>
+      </div>
+    </form>
+    </div>
+  </div>
+</ion-content>

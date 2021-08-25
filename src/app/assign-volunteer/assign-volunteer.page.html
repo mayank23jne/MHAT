@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Assign Patients</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <p class="center theme_color clinic_head" *ngIf="clinic_name.length>0">{{clinic_name}}</p>
+    <ion-searchbar  placeholder="Search patient name and file:" (keyup)="searchByKeyword($event)"></ion-searchbar>
+    <ion-list *ngIf="patient_list.length > 0">
+      <ion-list-header>
+        Patient List ({{patient_list.length}})
+      </ion-list-header>
+      <ion-item *ngFor="let patient of patient_list; let i = index">
+        <ion-avatar slot="start">          
+          <img src="assets/images/user.png">
+        </ion-avatar>
+        <ion-label>
+          <p>Sno. - {{i+1}}</p>
+          <h2 class="captial">{{patient.name}} ({{patient.file_no}})</h2>
+          <div *ngIf="patient.assign_patient==null">
+            <ion-button shape="round" routerLink="/volunteer-list/{{patient.id}}"  class="custom_btn" fill="outline">Assign</ion-button>
+            <ion-button shape="round" disabled class="custom_btn" fill="outline">Unassign</ion-button>
+          </div>
+          <div *ngIf="patient.assign_patient!=null">
+            <ion-button shape="round" disabled   class="custom_btn" fill="outline">Assign</ion-button>
+            <ion-button shape="round" (click)="unassignPatient(patient.id)" class="custom_btn" fill="outline">Unassign</ion-button>
+          </div>
+          
+          <!-- <ion-icon routerLink="/patient-details/{{patient.id}}" class="patient_edit_icon" name="create-outline"></ion-icon> -->
+        </ion-label>
+      </ion-item>     
+    </ion-list>
+    <div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+  </div>
+</ion-content>

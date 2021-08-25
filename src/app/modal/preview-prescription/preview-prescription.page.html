@@ -1,0 +1,29 @@
+<ion-content>
+  <h3 class="center theme_color">Prescription Preview</h3>
+  <ion-icon class="close_model" (click)="closeModal()" name="close"></ion-icon>
+  <div class="ion-padding">
+    <ion-card class="" style="box-shadow: none;" *ngIf="prescription.length > 0">
+      <ion-card-content class="custome_size" *ngFor="let pitem of prescription; let j = index">
+        <ion-row>
+          <ion-col size="2">
+            <h3 class="semiBold">{{j+1}}</h3>
+          </ion-col>
+          <ion-col size="7">
+            <p class="">{{pitem.dosage}} {{pitem.medicine}} {{pitem.units}} </p>
+            <p *ngIf="pitem.plan_type == '' || pitem.plan_type == 'daily'"> {{pitem.dailyplan}} for {{pitem.durationnumber}} {{pitem.duration}}</p>
+            <p *ngIf="pitem.plan_type != '' && (pitem.plan_type == '1 week' || pitem.plan_type == '2 weeks' || pitem.plan_type == '3 weeks' || pitem.plan_type == '4 weeks')"> {{pitem.dailyplan}} in {{pitem.plan_type}}</p>
+          </ion-col>
+        </ion-row>
+        </ion-card-content>
+        <ion-row style="float: right;">
+          <ion-col size="6">
+            <ion-button class="theme_btn" (click)="sendToClinic()">Send</ion-button>
+          </ion-col>
+          <ion-col size="6">
+            <ion-button class="theme_btn" (click)="closeModal()">Cancel</ion-button>
+          </ion-col>
+        </ion-row>
+        </ion-card>
+        <p class="center" *ngIf="prescription.length== 0">{{error}}</p>
+  </div>
+</ion-content>

@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Clinics</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="patient_add_btn" routerLink="/add-clinic"><ion-icon name="add-outline"></ion-icon></div>
+  <div class="ion-padding">
+    <ion-searchbar   placeholder="Search by clinic name:"  (keyup)="searchByKeyword($event)"></ion-searchbar>
+    <ion-list *ngIf="clinic_list">
+       <ion-button shape="round" color="dark" fill="outline" style="float: right;" (click)="exportToExcel(clinic__excel_list,'clinic_list')"><ion-icon name="cloud-download-outline"></ion-icon>&nbsp; download</ion-button> 
+      <ion-list-header>
+       Total Clinic ({{total_clinic}}) 
+      </ion-list-header>
+      <ion-item *ngFor="let clinic of clinic_list; let i = index">
+        <ion-avatar slot="start">          
+          <img src="assets/images/user.png">
+        </ion-avatar>
+        <ion-label>
+          <p>Sno. - {{i+1}}</p>
+          <h2 class="captial">{{clinic.name}}</h2>
+          <h3>Created By : Admin</h3>
+          <ion-icon  class="patient_edit_icon" (click)="deleteClinicById(clinic.id)" name="trash-outline"></ion-icon> 
+          <ion-icon routerLink="/clinic-edit/{{clinic.id}}" class="patient_edit_icon edit_icon_custom" name="create-outline"></ion-icon>
+        </ion-label>
+      </ion-item>  
+      <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>   
+    </ion-list>
+    <div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+  </div>
+  
+</ion-content>

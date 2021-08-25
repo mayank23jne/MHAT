@@ -1,0 +1,907 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start" >
+			<ion-icon (click)="showPopup()" *ngIf="role=='clinician'" name="arrow-back" style="font-size: 25px;"></ion-icon>
+      <ion-back-button *ngIf="role!='clinician'"></ion-back-button>
+		</ion-buttons>
+    <ion-title>Patient Detail's</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<!-- Segment with default selection -->
+<div class="ion-padding">
+  <ion-row class="detail_page_row">
+    <ion-col size="4">
+      Next Appointment 
+    </ion-col>
+    <ion-col size="1">
+      : 
+    </ion-col>
+    <ion-col size="7">
+      <span *ngIf="patient.scheduled_date"> {{patient.scheduled_date | date :'MMM,dd yyyy'}} {{patient.scheduled_time}}</span> 
+    </ion-col>
+    <ion-col size="4">
+      Assigned to
+    </ion-col>
+    <ion-col size="1">
+     :
+    </ion-col>
+    <ion-col size="7">
+      {{patient.volunteer_name}}
+    </ion-col>
+  </ion-row>
+<ion-segment value="general" [(ngModel)]="type" (ionChange)="segmentChanged($event)">
+  <ion-segment-button value="general">
+    <ion-label>General Info</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="medical">
+    <ion-label>Medical Info</ion-label>
+  </ion-segment-button>
+</ion-segment>
+<div [ngSwitch]="type">
+  <ion-list *ngSwitchCase="'general'">
+    <p class="center font_18 theme_color">General Information</p>
+    <div class="form">     
+      <ion-segment scrollable  value="step-1" [(ngModel)]="type1" >
+        <ion-segment-button [disabled]="type1 != 'step-1'" value="step-1" >
+          <ion-label>Step-1</ion-label>
+        </ion-segment-button>
+        <ion-segment-button [disabled]="type1 != 'step-2'"   value="step-2">
+          <ion-label>Step-2</ion-label>
+        </ion-segment-button>
+        <ion-segment-button [disabled]="type1 != 'step-3'" value="step-3">
+          <ion-label>Step-3</ion-label>
+        </ion-segment-button>
+        <ion-segment-button [disabled]="type1 != 'step-4'" value="step-4">
+          <ion-label>Step-4</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+      <div [ngSwitch]="type1" class="patient-form edit_form_remove_label">
+        <form name="form" id="p_form" (ngSubmit)="f.form.valid && patientEditForm(f)" #f="ngForm" method="post">
+          <diV  *ngSwitchCase="'step-1'">
+            <div class="single_field">
+              <div class="form_label">Patient name</div>
+              <ion-row>
+                <ion-col size="4">
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Unassigned</ion-label>
+                      <ion-select [(ngModel)]="patient.prefix" #prefixs="ngModel" [ngClass]="{ 'is-invalid': f.submitted && prefixs.invalid }"    name="prefix">
+                        <ion-select-option *ngFor="let prefixss of prefix_array" value="{{prefixss}}">{{prefixss}}</ion-select-option>
+                      </ion-select>
+                  </ion-item>
+                  <div *ngIf="f.submitted && prefixs.invalid" class="invalid-feedback">
+                    <div *ngIf="prefixs.errors.required">Prefix is required</div>
+                  </div>
+                </ion-col>
+                <ion-col size="8">
+                  <input [(ngModel)]="patient.name"  name="patient_fname" #p_name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && p_name.invalid }"  placeholder="Enter first name">
+                  <div *ngIf="f.submitted && p_name.invalid" class="invalid-feedback">
+                    <div *ngIf="p_name.errors.required">Patient name is required</div>
+                  </div>
+                </ion-col>
+              </ion-row> 
+              <ion-row>
+                <ion-col size="4">
+                  <input [(ngModel)]="patient.patient_middle_name"  name="patient_mname" placeholder="">
+                </ion-col>
+                <ion-col size="8">
+                  <input [(ngModel)]="patient.patient_last_name"  name="patient_lname"  placeholder="Enter last name">
+                </ion-col>
+              </ion-row>                
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">File no.</div>
+                  <input [(ngModel)]="patient.file_no"  name="file_no"  placeholder="Enter fileno">
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label" >Phone</div>
+                    <input type="number" [(ngModel)]="patient.mobile_no"  name="phone"  placeholder="Enter phone">
+                </ion-col>
+              </ion-row>                
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">External Id</div>
+                  <input [(ngModel)]="patient.external_id"  name="external_id"  placeholder="Enter external id">
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label" >DOB</div>
+                    <input [(ngModel)]="patient.dob"  name="dob" (click)="openDatePicker()" placeholder="Select Date">
+                </ion-col>
+              </ion-row>                
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Gender</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Gender</ion-label>
+                    <ion-select [(ngModel)]="patient.gender" #genders="ngModel" [ngClass]="{ 'is-invalid': f.submitted && genders.invalid }"    name="gender">
+                      <ion-select-option  *ngFor="let genders of gender_array" value="{{genders}}" >{{genders}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                  <div *ngIf="f.submitted && genders.invalid" class="invalid-feedback">
+                      <div *ngIf="genders.errors.required">Gender is required</div>
+                  </div>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label">Marital status</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Marital Status</ion-label>
+                      <ion-select [(ngModel)]="patient.marital_status"   name="m_status">
+                          <ion-select-option *ngFor="let marital of m_status_array" value="{{marital}}" >{{marital}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <!-- <div *ngIf="f.submitted && m_st.invalid" class="invalid-feedback">
+                        <div *ngIf="m_st.errors.required">Marital status is required</div>
+                    </div> -->
+                </ion-col>
+              </ion-row>                
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Age</div>
+                  <input type="number" [(ngModel)]="patient.age"    name="age" placeholder="Enter age" #ages="ngModel" [ngClass]="{ 'is-invalid': f.submitted && ages.invalid }" >
+                  <div *ngIf="f.submitted && ages.invalid" class="invalid-feedback">
+                    <div *ngIf="ages.errors.required">Age is required</div>
+                  </div>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label">Religion</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Religion</ion-label>
+                      <ion-select [(ngModel)]="patient.religions"  name="religions">
+                          <ion-select-option *ngFor="let res_array of religions_array" value="{{res_array}}" >{{res_array}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                </ion-col>
+              </ion-row>                
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Caste</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Caste</ion-label>
+                    <ion-select [(ngModel)]="patient.caste"  name="caste">
+                        <ion-select-option *ngFor="let cast of cast_array" value="{{cast}}" >{{cast}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label">House name</div>
+                  <input  [(ngModel)]="patient.house_name"    name="house_name" placeholder="Enter house name">
+                </ion-col>
+              </ion-row>                
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Place</div>
+                  <input  [(ngModel)]="patient.place"    name="place" placeholder="Enter place">
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label">District</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select District</ion-label>
+                    <ion-select [(ngModel)]="patient.district"  name="district">
+                        <ion-select-option *ngFor="let d of district_array" value="{{d}}" >{{d}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>                
+             </div>
+             <div class="single_field" style="text-align: center;">
+              <input type="hidden" [(ngModel)]="btn_1" name="btn_1">
+              <ion-button class="theme_btn" type="submit">
+                 Next
+              </ion-button>
+            </div>
+          </diV>
+          <diV  *ngSwitchCase="'step-2'">
+            <div class="single_field">
+              <div class="form_label">Children</div>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Unassigned</ion-label>
+                    <ion-select [(ngModel)]="patient.child"   name="child" (ionChange)="childrenChange($event)">
+                      <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+               
+              </ion-row> 
+              <ion-row>
+                <ion-col size="4" >
+                  <!-- <ion-icon name="remove-circle-outline" (click)="decrement('male')"></ion-icon> -->
+                  <input type="number" min="0"  [(ngModel)]="patient.child_male" disabled="{{isDisabled}}" name="child_male"  placeholder="male">
+                  <!-- <ion-icon name="add-circle-outline" (click)="increment('male')"></ion-icon> -->
+                </ion-col>
+                <ion-col size="4">
+                  <!-- <ion-icon name="remove-circle-outline" (click)="decrement('female')"></ion-icon> -->
+                  <input type="number" min="0" [(ngModel)]="patient.child_female" disabled="{{isDisabled}}"  name="child_female" placeholder="female">
+                  <!-- <ion-icon name="add-circle-outline" (click)="increment('female')"></ion-icon> -->
+                </ion-col>
+                <ion-col size="4">
+                  <!-- <ion-icon name="remove-circle-outline" (click)="decrement('female')"></ion-icon> -->
+                  <input type="number" min="0" [(ngModel)]="patient.child_other" disabled="{{isDisabled}}"  name="child_other" placeholder="other">
+                  <!-- <ion-icon name="add-circle-outline" (click)="increment('female')"></ion-icon> -->
+                </ion-col>
+              </ion-row>              
+             </div>
+             <div class="single_field">
+              <div class="form_label">Siblings</div>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Unassigned</ion-label>
+                    <ion-select  [(ngModel)]="patient.sibling" (ionChange)="siblingChange($event)"   name="sibling">
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="4">
+                  <input type="number" min="0" [(ngModel)]="patient.sibling_male" disabled="{{isSiblingDisabled}}" name="sibling_male"  placeholder="male">
+                </ion-col>
+                <ion-col size="4">
+                  <input type="number" min="0" [(ngModel)]="patient.sibling_female" disabled="{{isSiblingDisabled}}"  name="sibling_female" placeholder="female">
+                </ion-col>
+                <ion-col size="4">
+                  <input type="number" min="0" [(ngModel)]="patient.sibling_other" disabled="{{isSiblingDisabled}}" name="sibling_other" placeholder="other">
+                </ion-col>
+              </ion-row>                 
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Educational Status</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Education</ion-label>
+                    <ion-select [(ngModel)]="patient.education"  name="education">
+                      <ion-select-option *ngFor="let edu of education_array" value="{{edu}}">{{edu}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label">Stay</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Stay</ion-label>
+                    <ion-select [(ngModel)]="patient.stay"  name="stay">
+                        <ion-select-option *ngFor="let stays of stay_array" value="{{stays}}">{{stays}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>                
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Occupation</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Occupation</ion-label>
+                    <ion-select [(ngModel)]="patient.occupation" (ionChange)="occupationChange($event)"  name="occupation">
+                        <ion-select-option *ngFor="let o of occupation_array" value="{{o}}">{{o}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label">Type of job</div>
+                  <input [(ngModel)]="patient.job_type" disabled="{{isTypeJobDisabled}}"  name="toj" placeholder="">
+                </ion-col>
+              </ion-row>                
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="12">
+                  <div class="form_label">Income of the patient</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Patient Income</ion-label>
+                    <ion-select [(ngModel)]="patient.patient_income"  name="patient_income">
+                        <ion-select-option  *ngFor="let pi of patient_income_array" value="{{pi}}">{{pi}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="12">
+                  <div class="form_label">Other earning members</div>
+                  <!-- <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Earning Members</ion-label>
+                    <ion-select [(ngModel)]="patient.other_earning_member"  name="other_e_member">
+                        <ion-select-option  *ngFor="let em of earning_member_array" value="{{em}}">{{em}}</ion-select-option>
+                    </ion-select>
+                  </ion-item> -->
+                  <!-- <ion-list>
+                    <ion-item  lines="none" *ngFor="let ot of other_mem; let j = index;">
+                        <ion-label >{{ot.member_names}}</ion-label>
+                        <ion-checkbox slot="start" checked="{{ot.checked}}"  (ionChange)="getCheckBoxValue($event,ot.member_names)"></ion-checkbox>
+                    </ion-item>
+                  </ion-list> -->
+                  <ion-row>
+                    <ion-col size="6" *ngFor="let oo of earning_member_array">
+                      <ion-checkbox checked="{{oo.checked}}" (ionChange)="getCheckBoxValue($event,oo.member_names)"></ion-checkbox>
+                      <ion-label style="margin-left: 10px;">{{oo.member_names}}</ion-label>
+                      
+                    </ion-col>
+                  </ion-row>
+                      
+                </ion-col>
+              </ion-row>                
+             </div>
+             <div class="single_field" *ngIf="earning_member_array.length > 0">
+              <ion-row >
+                <ion-col size="6" *ngFor="let dynamic of earning_member_array; let i = index;">
+                  <div class="form_label">{{dynamic.member_names}}</div>
+                    <input [(ngModel)]="dynamic.value" name="test_{{dynamic.member_names}}" placeholder="{{dynamic.member_names}}">
+                </ion-col>
+                </ion-row>
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <!-- <ion-col size="12">
+                  <div class="form_label">Income earning members</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Income Earning Member</ion-label>
+                    <ion-select [(ngModel)]="patient.income_earning_member"  name="income_e_member">
+                      <ion-select-option *ngFor="let emi of earning_member_income_array" value="{{emi}}">{{emi}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col> -->
+                <ion-col size="12">
+                  <div class="form_label">Diagnosis</div>
+                    <textarea [(ngModel)]="patient.diagnosis" rows="4" name="diagnosis" placeholder=""></textarea>
+                </ion-col>
+              </ion-row>                
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Duration of illness</div>
+                  <input [(ngModel)]="patient.illness_duration"  name="illness_duration" placeholder="">
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label">Age of onset</div>
+                    <input [(ngModel)]="patient.onset_age"  name="onset_age" placeholder="">
+                </ion-col>
+              </ion-row>                
+             </div>
+            <div class="single_field" style="text-align: center;">
+              <input type="hidden" [(ngModel)]="btn_2" name="btn_2">
+              <ion-button (click)="previous_stage('step-1')" class="theme_btn" type="submit">
+                Previous
+             </ion-button>
+              <ion-button class="theme_btn" type="submit">
+                 Next
+              </ion-button>
+            </div>
+          </diV>
+          <diV  *ngSwitchCase="'step-3'">
+            <div class="single_field">                
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">MI in family</div>
+                   <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Unassigned</ion-label>
+                      <ion-select [(ngModel)]="patient.mi_family"   name="mi_family">
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                     </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label">Relationship with patient</div>
+                   <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Relationship With Patient</ion-label>
+                      <ion-select [(ngModel)]="patient.relation_with_patient"   name="relation_with_patient">
+                        <ion-select-option *ngFor="let pr of relation_with_patient_array" value="{{pr}}">{{pr}}</ion-select-option>
+                     </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>                 
+             </div>
+             <h3 class="form_section__head_custom">Suicide Related Information </h3>
+             <div class="single_field">                
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Suicide committed by family member</div>
+                   <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Unassigned</ion-label>
+                      <ion-select [(ngModel)]="patient.suicide_commited" (ionChange)="suicideChange($event)"  name="suicide_commited">
+                        <ion-select-option  *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                     </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label">Which family member</div>
+                   <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Which Family Member</ion-label>
+                      <ion-select [(ngModel)]="patient.which_member"   name="which_member" disabled="{{isSuicideDisabled}}">
+                        <ion-select-option  *ngFor="let wm of which_member_array" value="{{wm}}">{{wm}}</ion-select-option>
+                        
+                        
+                     </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>                 
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Type of suicide attempt</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Type Of Suicide Attempt</ion-label>
+                    <ion-select [(ngModel)]="patient.suicide_type"  name="suicide_type" disabled="{{isSuicideDisabled}}">
+                        <ion-select-option *ngFor="let sta of suicide_type_array" value="{{sta}}">{{sta}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                
+              </ion-row>                
+             </div>
+             <h3 class="form_section__head_custom">Treatment Received Earlier </h3>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Treatment received earlier</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Treatment Received Earlier</ion-label>
+                    <ion-select [(ngModel)]="patient.earlier_treatment"  name="earlier_treatment" (ionChange)="changeTreatment($event)">
+                      <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label">Treatment source {{patient.treatment_source}}</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Treatment Source</ion-label>
+                    <ion-select multiple="true" [(ngModel)]="this.split_trat"   name="treatment_source" disabled="{{isTreatDisabled}}">
+                        <ion-select-option *ngFor="let ts of treatment_source_array" checked="true" value="{{ts}}">{{ts}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+               
+              </ion-row>                
+             </div>
+            
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Pt. disability certificate </div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Disability Certificate</ion-label>
+                    <ion-select [(ngModel)]="patient.disability_certificate"  name="disability_certificate">
+                      <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label">Home </div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Home</ion-label>
+                    <ion-select [(ngModel)]="patient.home"  name="home">
+                      <ion-select-option *ngFor="let ha of home_array" value="{{ha}}">{{ha}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>                
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Roof </div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Roof</ion-label>
+                    <ion-select [(ngModel)]="patient.roof"  name="roof">
+                      <ion-select-option *ngFor="let ra of roof_array" value="{{ra}}">{{ra}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label">Distance of drinking water </div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Distance Of Drinking Water</ion-label>
+                    <ion-select [(ngModel)]="patient.drinking_distance"  name="drinking_distance">
+                      <ion-select-option *ngFor="let dda of drinking_distance_array" value="{{dda}}">{{dda}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>                
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Pt. aadhar card</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Aadhar Card</ion-label>
+                    <ion-select [(ngModel)]="patient.aadhar_card"  name="aadhar_card">
+                      <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label">Pt. ration card</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Ration Card</ion-label>
+                    <ion-select [(ngModel)]="patient.ration_card"  name="ration_card">
+                      <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>                
+             </div>
+             <div class="single_field">
+               <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Pt. election id</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Election ID</ion-label>
+                    <ion-select [(ngModel)]="patient.election_id"  name="election_id">
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+               </ion-row>
+             </div>
+            <div class="single_field" style="text-align: center;">
+              <input type="hidden" [(ngModel)]="btn_3" name="btn_3">
+              <ion-button (click)="previous_stage('step-2')" class="theme_btn" type="submit">
+                Previous
+             </ion-button>
+              <ion-button class="theme_btn" type="submit">
+                 Next
+              </ion-button>
+            </div>
+          </diV>
+          <diV  *ngSwitchCase="'step-4'">
+            <div class="single_field">                
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Source of drinking water</div>
+                   <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Source Of Drinking Water</ion-label>
+                      <ion-select [(ngModel)]="patient.drinking_water_source"   name="drinking_water_source">
+                        <ion-select-option *ngFor="let dds of drinking_water_source_array" value="{{dds}}">{{dds}}</ion-select-option>
+                     </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label">Toilet facility</div>
+                   <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Toilet Facility</ion-label>
+                      <ion-select [(ngModel)]="patient.toilet_facility"   name="toilet_facility">
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                     </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>                 
+             </div>
+             <div class="single_field">                
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Gas Connection</div>
+                   <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Gas Connection</ion-label>
+                      <ion-select [(ngModel)]="patient.gas_connection"   name="gas_connection">
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                     </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label">Vehicle</div>
+                   <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Vehicle</ion-label>
+                      <ion-select [(ngModel)]="patient.vehicle"   name="vehicle">
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                     </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>                 
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Mobile phone</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Mobile Phone</ion-label>
+                    <ion-select  [(ngModel)]="patient.mobile_phone"  name="mobile_phone">
+                      <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label">Land phone</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Land Phone</ion-label>
+                    <ion-select [(ngModel)]="patient.land_phone"  name="land_phone">
+                      <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>                
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">TV</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select TV</ion-label>
+                    <ion-select [(ngModel)]="patient.tv"  name="tv">
+                      <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label">Fridge</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Fridge</ion-label>
+                    <ion-select [(ngModel)]="patient.fridge"  name="fridge">
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>                
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Food kit </div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Food Kit</ion-label>
+                    <ion-select [(ngModel)]="patient.food_kit"  name="food_kit">
+                      <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label">Financial help</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Financial Help</ion-label>
+                    <ion-select [(ngModel)]="patient.financial_help"  name="financial_help">
+                      <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>                
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Kits on spl. occasions </div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select kits On Spl. Occasions</ion-label>
+                    <ion-select [(ngModel)]="patient.kits_occasion"  name="kits_occasion">
+                      <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">                    
+                  <ion-row>
+                    <ion-col size="6">
+                      <div class="form_label">Govt pension </div>
+                      <ion-item lines="none" class="login_role_select">
+                        <ion-label class="role_label">Unassigned</ion-label>
+                        <ion-select [(ngModel)]="patient.pension" name="pension" (ionChange)="changeGovt($event)">
+                          <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                        </ion-select>
+                      </ion-item>
+                    </ion-col>
+                    <ion-col size="6">
+                      <div class="form_label">Type of pension </div>
+                      <input [(ngModel)]="patient.pension_type" disabled="{{isGovtDisabled}}"  name="pension_type"  placeholder="">
+                    </ion-col>
+                  </ion-row>      
+                </ion-col>
+              </ion-row>                
+             </div>
+             <div class="single_field">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="form_label">Health care </div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Health Care</ion-label>
+                    <ion-select [(ngModel)]="patient.health_care"  name="health_care">
+                      <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="form_label">Medicines</div>
+                  <ion-item lines="none" class="login_role_select">
+                    <ion-label class="role_label">Select Medicines</ion-label>
+                    <ion-select [(ngModel)]="patient.medicines"  name="medicines">
+                      <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>                
+             </div>
+            <div class="single_field" style="text-align: center;">
+              <input type="hidden" [(ngModel)]="btn_4" name="btn_4">
+              <ion-button (click)="previous_stage('step-3')" class="theme_btn" type="submit">
+                Previous
+             </ion-button>
+              <ion-button class="theme_btn" type="submit">
+                 Update
+              </ion-button>
+            </div>
+          </diV>       
+        </form>
+      </div>      
+  </div>
+  </ion-list>
+
+  <ion-list *ngSwitchCase="'medical'" class="med_in">
+    <p class="center font_18 theme_color">Medical Information</p>
+    <div class="medical_info"> 
+      <p class="med_p">Patient : <span class="med_span">{{patient.name}} ({{patient.file_no}})</span></p>
+      <p class="med_p">Age : <span class="med_span">{{patient.age}}</span></p>
+      <p class="med_p">Patient Status : 
+        <span class="med_span" *ngIf="patient.patient_status == 'Deceased'" id="red_font">{{patient.patient_status}}</span>
+        <span class="med_span" *ngIf="patient.patient_status == 'Active'" id="green_font">{{patient.patient_status}}</span>
+        <span class="med_span" *ngIf="patient.patient_status == 'Expired'" id="black_font">{{patient.patient_status}}</span>
+        <span class="med_span" *ngIf="patient.patient_status == 'Dropped Out'" id="grey_font">{{patient.patient_status}}</span>
+      </p>
+      
+      <!-- <ion-row>
+        <ion-col size="4">
+          <p class="med_p">Change Patient Clinic : </p>
+        </ion-col>
+        <ion-col size="8">
+          <ion-item lines="none" class="login_role_select">
+            <ion-label class="role_label">Change Patient Clinic</ion-label>
+            <ion-select >
+                <ion-select-option *ngFor="let cli of clinic_list;" value="{{cli.id}}" >{{cli.clinic_place_name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row> -->
+      
+      <div *ngIf="patient.history"> 
+        <ion-icon class="p_h_delete_icon" (click)="deleteHistory(patient.id)" name="trash-outline"></ion-icon>
+        <ion-icon class="p_h_edit_icon" routerLink="/patient-history/{{patient.id}}" name="create-outline"></ion-icon>
+        <p class="p_history center theme_color">Case History </p>
+        <p class="p_h_text">{{patient.history}}</p>
+      </div>
+      <div *ngIf="patient.diagnosis_name">
+        <ion-icon class="p_h_delete_icon" (click)="deleteDiagnosis(patient.id)"  name="trash-outline"></ion-icon>
+        <ion-icon class="p_h_edit_icon"  routerLink="/add-diagnosis/{{patient.id}}"  name="create-outline"></ion-icon>
+        <p class="p_history center theme_color">Psychiatric Diagnosis </p>
+        <p class="p_h_text">{{patient.diagnosis_name}}</p>
+      </div>
+      <div *ngIf="patient.morbidity_desc"> 
+        <ion-icon class="p_h_delete_icon" (click)="deleteMorbidity(patient.id)" name="trash-outline"></ion-icon>
+        <ion-icon class="p_h_edit_icon" routerLink="/co-morbidity/{{patient.id}}" name="create-outline"></ion-icon>
+        <p class="p_history center theme_color">Medical Co-Morbidity </p>
+        <p class="p_h_text">{{patient.morbidity_desc}}</p>
+      </div>
+    </div>
+    <div *ngIf="role!='doctor'"> 
+      <ion-button *ngIf="patient.scheduled_date" shape="round" color="dark" (click)='viewUpcomingAppointment()' fill="outline" style="margin-top: 15px;position: absolute;">Upcoming Appt</ion-button>
+    </div>
+    <div *ngIf="prescriptionlist.length > 0">
+      <div *ngIf="role!='doctor'"><ion-button style="float: right;margin-top: 15px;" shape="round" color="dark" (click)='makePdf()' fill="outline"><ion-icon name="download-outline"></ion-icon></ion-button><br/><br/></div><br/><br/>
+      <ion-card class="custom_card selectable" *ngFor="let pres of prescriptionlist; let i = index">
+        <ion-card-header>
+          <ion-card-subtitle class="date_class">{{ pres.entryDate | date :  "dd MMMM y" }}</ion-card-subtitle>
+          <!-- <ion-card-title>Prescription</ion-card-title> -->
+        </ion-card-header>
+        <h3 class="presc_class font_18 blue_color" *ngIf="pres.presarray">Prescription -  <span (click)="repeatAllPrescription(pres.entryDate, patient.id)">Repeat all <ion-icon   name="repeat-outline"></ion-icon></span></h3>
+        <ion-card-content class="custome_size cust_pres_bg_color" *ngFor="let pitem of pres.presarray; let j = index">
+          <ion-row>
+            <ion-col size="2">
+              <h3 class="semiBold">{{j+1}}</h3>
+            </ion-col>
+            <ion-col size="7">
+              <p class="">{{pitem.dosage}} {{pitem.medicine}} {{pitem.units}} </p>
+              <p *ngIf="pitem.plan_type == '' || pitem.plan_type == 'daily'"> {{pitem.dailyplan}} for {{pitem.durationnumber}} {{pitem.duration}}</p>
+              <p *ngIf="pitem.plan_type != '' && (pitem.plan_type == '1 week' || pitem.plan_type == '2 weeks' || pitem.plan_type == '3 weeks' || pitem.plan_type == '4 weeks' || pitem.plan_type == 'monthly')"> {{pitem.dailyplan}} in {{pitem.plan_type}}</p>
+            </ion-col >
+            <ion-col size="3" class="text-right"> <ion-icon class="edit_prescription_icon" routerLink="/edit-prescription/{{pitem.id}}" name="create-outline"></ion-icon> <ion-icon (click)="deletePrescription(pitem.id)" class="del_prescription_icon" name="trash-outline"></ion-icon> <ion-icon (click)="repeatPrescription(pitem.id)" class="repeat_prescription_icon" name="repeat-outline"></ion-icon>
+            </ion-col>
+          </ion-row>
+          
+        </ion-card-content>
+        <h3 class="presc_class font_18" *ngIf="pres.testarray">Investigation Result</h3>
+        <ion-card-content class="custome_size" *ngFor="let testItem of pres.testarray; let k = index">
+          <ion-row>
+            <ion-col size="2">
+              <h3 class="semiBold">{{k+1}}</h3>
+            </ion-col>
+            <ion-col size="7">
+              <p >{{testItem.test}} ({{testItem.level}}) </p>
+            </ion-col>
+            <ion-col size="3" class="text-right">
+              <ion-icon *ngIf="testItem.report" (click)="download(testItem.report)" name="attach-outline" class="invest_icon_edit" ></ion-icon><ion-icon class="invest_icon_edit" routerLink="/edit-patient-blood/{{testItem.id}}" name="create-outline"></ion-icon> <ion-icon (click) = "deleteTest(testItem.id)" class="invest_icon_del" name="trash-outline"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+        <h3 class="presc_class font_18 folow_color" *ngIf="pres.notesarray">Follow Up Notes</h3>
+        <ion-card-content class="custome_size cust_notes_bg_color" *ngFor="let notesItem of pres.notesarray; let n = index">
+          <ion-row>
+            <ion-col size="2">
+              <h3 class="semiBold">{{n+1}}</h3>
+            </ion-col>
+            <ion-col size="7">
+              <p class="">{{notesItem.description}}</p>
+            </ion-col>
+            <ion-col size="3" class="text-right">
+              <ion-icon class="invest_icon_edit" (click)="viewAll(notesItem.id)" name="eye-outline"></ion-icon> <ion-icon class="invest_icon_edit"  routerLink="/edit-note/{{notesItem.id}}" name="create-outline"></ion-icon> <ion-icon class="invest_icon_del" (click) = "deleteNote(notesItem.id)"   name="trash-outline"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+        <h3 class="presc_class font_18" *ngIf="pres.feedbacksarray">Supervisor Feedback</h3>
+        <ion-card-content class="custome_size" *ngFor="let feedbackItem of pres.feedbacksarray; let f = index">
+          <ion-row>
+            <ion-col size="2">
+              <h3 class="semiBold">{{f+1}}</h3>
+            </ion-col>
+            <ion-col size="7">
+              <p class="">{{feedbackItem.feedback_details}}</p>
+            </ion-col>
+            <ion-col size="3" class="text-right" [style]=show>
+              <ion-icon class="invest_icon_edit"  routerLink="/update-supervisor-feedback/{{feedbackItem.id}}" name="create-outline"></ion-icon> <ion-icon class="invest_icon_del" (click) = "deleteFeedback(feedbackItem.id)"   name="trash-outline"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+      <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </div>
+    <ion-fab horizontal="end" vertical="top" slot="fixed">
+      <ion-fab-button color="primary" class="">
+       Add
+      </ion-fab-button>
+      <ion-fab-list side="top">  
+        
+        <ion-fab-button color="primary"   [style]=display (click)="sendToDoc(patient.id)" routerDirection="forward" data-desc="Send to Doctor">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button color="primary"  routerLink="/schedule-appointment/{{patient.id}}" routerDirection="forward" data-desc="Schedule Appt">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button color="primary" routerLink="/notes/{{patient.id}}" routerDirection="forward" data-desc="Follow Up Notes">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button color="primary" routerLink="/add-prescription/{{patient.id}}" routerDirection="forward" data-desc="Prescription">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button color="primary"  [style]=display routerLink="/volunteer-list/{{patient.id}}" *ngIf="role=='clinician'" routerDirection="forward" data-desc="Assign Volunteer">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button color="primary"   routerLink="/patient-blood/{{patient.id}}" routerDirection="forward" data-desc="Investigation Results">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>   
+        <ion-fab-button color="primary"   routerLink="/co-morbidity/{{patient.id}}"  routerDirection="forward" data-desc="Medical Co-Morbidity">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>       
+        <ion-fab-button color="primary" routerLink="/add-diagnosis/{{patient.id}}" routerDirection="forward" data-desc="Psychiatric Diagnosis">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button color="primary"   routerLink="/patient-history/{{patient.id}}" routerDirection="forward" data-desc="Case History">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button color="primary" [style]=show routerDirection="forward" (click)="previewPrescription()" data-desc="Send To Clinic">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button color="primary" [style]=show  routerLink="/add-supervisor-feedback/{{patient.id}}" routerDirection="forward" data-desc="Supervisor Feedback">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button color="primary" *ngIf="role=='clinicadmin'"  routerLink="/change-clinic/{{patient.id}}" routerDirection="forward" data-desc="Change Clinic">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab-list>
+    </ion-fab>
+  </ion-list>
+</div>
+
+</div>
+</ion-content>

@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Today's Appointment</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <p class="center theme_color clinic_head" *ngIf="clinic_name.length>0">{{clinic_name}}</p>
+    <ion-searchbar  placeholder="Search by patient name or file no" (keyup)="searchByKeyword($event)"></ion-searchbar>
+    <ion-list *ngIf="today_list.length > 0">
+      <ion-list-header>
+        Today's Appointment List ({{today_list.length}})
+      </ion-list-header>
+      <ion-item *ngFor="let patient of today_list; let i = index">
+        <ion-avatar slot="start">          
+          <img src="assets/images/user.png">
+        </ion-avatar>
+        <ion-label>
+          <p>Sno. - {{i+1}}</p>
+          <h2 class="captial">{{patient.patient_name}} ({{patient.file_no}})</h2>
+          <h3 *ngIf="patient.full_name!=''">Scheduled By : {{patient.full_name}}</h3>
+          <h3 *ngIf="patient.full_name==''">Scheduled By : {{patient.short_name}}</h3>
+          <h3>Date : {{patient.date}}</h3>
+          <h3>Time : {{patient.time}}</h3>
+          <ion-icon routerLink="/patient-details/0/{{patient.patient_id}}" class="patient_edit_icon" name="create-outline"></ion-icon>
+          <!-- <ion-icon routerLink="/patient-details/{{patient.patient_id}}" class="patient_edit_icon" name="create-outline"></ion-icon> -->
+          <!-- <ion-icon routerLink="/patient-details/{{patient.id}}" class="patient_edit_icon" name="create-outline"></ion-icon> -->
+        </ion-label>
+      </ion-item>  
+      <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>  
+    </ion-list>
+    <div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+  </div>
+</ion-content>

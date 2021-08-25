@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <div class="form">
+	  <form name="form" (ngSubmit)="f.form.valid && profilForm(f)" #f="ngForm" method="post">
+      <div class="single_field img_div">
+        <label for="file-input">
+          <img *ngIf="!profile.profile_image && img1==''" src="assets/images/user.png"  class="logo_img"/>
+          <img *ngIf="img1!=''" [src]="img1" class="logo_img"/>
+          <img *ngIf="profile.profile_image && img1=='' " src="{{baseURI}}{{profile.profile_image}}"  class="logo_img"/>
+        </label>
+        <input id="file-input" type="file" (change)="fileChange($event)" />
+      </div>
+      <div class="single_field">
+        <div class="form_label">User Name</div>
+        <input  disabled="true" [(ngModel)]="profile.username"   name="username" placeholder="Enter username">
+       </div>
+       <div class="single_field">
+        <div class="form_label">Full Name</div>
+        <input  [(ngModel)]="profile.full_name"  name="full_name" placeholder="Enter full name">
+		    </div>
+      <div class="single_field">
+        <div class="form_label">Email</div>
+        <input  [(ngModel)]="profile.email"  #email_id="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email_id.invalid }" required  name="email" placeholder="Enter email">
+		    <div *ngIf="f.submitted && email_id.invalid" class="invalid-feedback">
+            <div *ngIf="email_id.errors.required">Email id is required</div>
+        </div>
+      </div>
+      <div class="single_field">
+        <div class="form_label">Age</div>
+        <input type="number" [(ngModel)]="profile.age"    name="age" placeholder="Enter age">
+      </div>
+      <div class="single_field">
+        <div class="form_label">Phone</div>
+        <input type="number" [(ngModel)]="profile.phone"    name="phone" placeholder="Enter phone">
+        <input type="hidden" [(ngModel)]="profile.profile_image"    name="old_image" >
+      </div>
+      <div class="single_field">
+        <div class="form_label">Role Title</div>
+        <ion-item lines="none" class="login_role_select">
+          <ion-label class="role_label">Select Role Title</ion-label>
+          <ion-select [(ngModel)]="profile.designation" name="designation" >
+            <ion-select-option value="Clinical Psychologist" >Clinical Psychologist</ion-select-option>
+            <ion-select-option value="Psychiatric Social Worker" >Psychiatric Social Worker</ion-select-option>
+            <ion-select-option value="Psychologist">Psychologist</ion-select-option>
+            <ion-select-option value="Social Worker">Social Worker</ion-select-option>
+            <ion-select-option value="Doctors">Doctors</ion-select-option>
+          </ion-select>
+        </ion-item>
+        </div>
+      <div class="single_field">
+        <div class="form_label">Address</div>
+        <textarea [(ngModel)]="profile.address" rows="6" cols="35"   name="address" placeholder="Enter address"></textarea>
+		  </div>
+	 
+      <div class="single_field" style="text-align: center;">
+        <ion-button class="theme_btn" type="submit">
+           Submit
+        </ion-button>
+      </div>
+    </form>
+    </div>
+  </div>
+</ion-content>

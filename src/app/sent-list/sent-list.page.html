@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Sent List</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- <div class="patient_add_btn" routerLink="/add-patient"><ion-icon name="add-outline"></ion-icon></div> -->
+  <div class="ion-padding">
+    <!-- <p class="center theme_color clinic_head">{{clinic_name}}</p> -->
+    <!-- <ion-searchbar  placeholder="Search Patient or FileNo:" (keyup)="searchByKeyword($event)"></ion-searchbar> -->
+    
+    <div class="single_field">
+      <ion-item>
+        <ion-label>From Date</ion-label>
+        <ion-input class="testing_input" [(ngModel)]="from_date" name="from_date"  (click)="from_date_picker()"></ion-input>
+        <!-- <ion-datetime displayFormat="MMM DD, YYYY" (ionChange)="selectedAppointment()" [(ngModel)]="from_date"  name="from_date" ></ion-datetime> -->
+      </ion-item>
+    </div>
+    <div class="single_field">
+      <ion-item>
+        <ion-label>To Date</ion-label>
+        <ion-input class="testing_input" [(ngModel)]="to_date" name="to_date" (click)="to_date_picker()"></ion-input>
+        <!-- <ion-datetime displayFormat="MMM DD, YYYY" (ionChange)="selectedAppointment()" [(ngModel)]="to_date"  name="to_date" ></ion-datetime> -->
+      </ion-item>
+    </div>
+    <div class="single_field" style="text-align: center;">
+      <ion-button class="theme_btn" type="submit" (click)="selectedAppointment()">
+         Search
+      </ion-button>
+    </div>
+    <ion-list *ngIf="patient_list.length > 0">
+      <ion-list-header>
+        Total Patient ({{patient_list.length}})
+      </ion-list-header>
+      <ion-item *ngFor="let patient of patient_list; let i = index">
+        <ion-avatar slot="start">          
+          <img src="assets/images/user.png">
+        </ion-avatar>
+        <ion-label>
+          <p>Sno. - {{i+1}}</p>
+          <h2 class="captial">{{patient.patient_name}} ({{patient.file_no}})</h2>
+          <h3>Clinic : {{patient.clinic_name}}</h3>
+          <p  class="captial"*ngIf="patient.full_name">Added By : {{patient.full_name}}</p>
+          <p class="captial" *ngIf="!patient.full_name">Added By : {{patient.username}}</p>
+          <h3>On Date : {{patient.date | date :'MMM,dd yyyy'}}</h3>
+          <!-- <ion-icon routerLink="/patient-details/{{patient.id}}/{{patient.patient_id}}" class="patient_edit_icon" name="create-outline"></ion-icon> -->
+           <ion-button shape="round" fill="outline" color="danger">Sent</ion-button>
+        </ion-label>
+      </ion-item>     
+    </ion-list>
+    <div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+  </div>
+  
+</ion-content>

@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Clinicians Wise Patient Report</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+    <div class="form_label">Clinician</div>
+    <ion-item lines="none" class="login_role_select edit_form_remove_label">
+      <ion-label class="role_label">Select Clinician</ion-label>
+      <ion-select [(ngModel)]="clinicians" (ionChange)="selectClinician($event)" >
+          <ion-select-option value="">All</ion-select-option>
+          <ion-select-option value="{{clinician.id}}" *ngFor="let clinician of clinician_list" >{{clinician.full_name}}</ion-select-option>
+       </ion-select>
+    </ion-item>
+  <ion-list *ngIf="patient_list.length > 0">
+    <!-- <div class="download_img_div"><img src="assets/images/file-download.png" (click)="generateReport()"></div> -->
+    <div class="download_img_div"><ion-button shape="round" color="dark" (click)='generateReport()' fill="outline"><ion-icon name="download-outline"></ion-icon></ion-button></div>
+    <ion-list-header>
+      Total Patient ({{patient_list.length}})
+    </ion-list-header>
+    <ion-item-group  lines="none" *ngFor="let patient of patient_list; let i = index">
+      <ion-item-divider lines="none" class="list_sr_no">
+        Sno. - {{i+1}}
+      </ion-item-divider>
+    <ion-item lines="full">
+      <ion-avatar slot="start">          
+        <img src="assets/images/user.png">
+      </ion-avatar>
+      <ion-label >          
+        <h2 class="captial">{{patient.name}} ({{patient.file_no}})</h2>
+        <h3>Clinic : {{patient.clinic_name}}</h3>
+        <p  class="captial"*ngIf="patient.full_name">Added By : {{patient.full_name}}</p>
+        <p class="captial" *ngIf="!patient.full_name">Added By : {{patient.username}}</p>
+        <h3>Admission Date : {{patient.entryDate | date :'MMM,dd yyyy'}}</h3>
+        <h3 >Patient Status : <b>{{patient.patient_status}}</b></h3>   
+      </ion-label>
+    </ion-item>     
+  </ion-item-group>
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  </ion-list>
+  <div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+</ion-content>

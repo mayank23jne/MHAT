@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Patient List</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="patient_add_btn" routerLink="/patient-form"><ion-icon name="add-outline"></ion-icon></div>
+  <div class="ion-padding">
+    <p class="center theme_color clinic_head" *ngIf="clinic_name.length>0">{{clinic_name}}</p>
+    <ion-row>
+      <ion-col size="9">
+        <ion-searchbar  placeholder="Search Patient or FileNo:" [(ngModel)]="search_name"></ion-searchbar>
+      </ion-col>
+      <ion-col size="3">
+        <ion-button shape="round" style="margin-top: 10px;" color="dark" fill="outline" (click)="searchByKeyword()"><ion-icon name="search-outline"></ion-icon></ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-list *ngIf="patient_list.length > 0">
+      <ion-button shape="round" color="dark" fill="outline" style="float: right;" (click)="exportToExcel(patient_list,'patient_list')"><ion-icon name="cloud-download-outline"></ion-icon>&nbsp; download</ion-button>
+      <ion-icon *ngIf="role == 'clinicadmin'" (click)="deletePatient()" name="trash-outline" class="patient_delete_button"></ion-icon>
+      <ion-list-header>
+        Total Patient ({{patient_list.length}})
+      </ion-list-header>
+      <ion-item-group  lines="none" *ngFor="let patient of patient_list; let i = index">
+        <ion-item-divider lines="none" class="list_sr_no">
+          Sno. - {{i+1}} <ion-checkbox *ngIf="role == 'clinicadmin'" color="primary" class="appoint_check_box" (ionChange)="selectpatient($event,patient.id)"></ion-checkbox>
+        </ion-item-divider>
+      <ion-item lines="full">
+        <ion-avatar slot="start">          
+          <img src="assets/images/user.png">
+        </ion-avatar>
+        
+        <ion-label >          
+          <h2 class="captial">{{patient.name}} ({{patient.file_no}})</h2>
+          <h3>Clinic : {{patient.clinic_name}}</h3>
+          <p  class="captial"*ngIf="patient.full_name">Added By : {{patient.full_name}}</p>
+          <p class="captial" *ngIf="!patient.full_name">Added By : {{patient.username}}</p>
+          <h3>Admission Date : {{patient.entryDate | date :'MMM,dd yyyy'}}</h3>
+          <h3>Next Appointment : {{patient.scheduled_date | date :'MMM,dd yyyy'}} {{patient.scheduled_time}} </h3>
+          <h3 >Patient Status : <b>{{patient.patient_status}}</b></h3>          
+          <ion-row>
+            <ion-col size="7">
+              <ion-button shape="round" fill="outline" class="theme_color custom_btn" (click)="changePatientStatus(patient.id,patient.patient_status)">Change Status</ion-button>
+            </ion-col>
+          </ion-row>          
+          <ion-row *ngIf="patient.appointment_id!='' && patient.appointment_id!=null">
+            <ion-col size="7">
+              <ion-button  shape="round" fill="outline"  routerLink="/reschedule-appointment/{{patient.appointment_id}}" class="theme_color custom_btn">Re-schedule</ion-button>
+            </ion-col>
+            <ion-col size="5">
+              <ion-button (click)="deleteAppointment(patient.appointment_id)" shape="round" fill="outline" color="danger"   class="custom_btn">Delete</ion-button>
+            </ion-col>
+          </ion-row>
+          
+          <ion-icon routerLink="/patient-details/0/{{patient.id}}" class="patient_edit_icon" name="create-outline"></ion-icon>
+          
+        
+        </ion-label>
+      </ion-item>     
+    </ion-item-group>
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    </ion-list>
+    <div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+  </div>
+  
+</ion-content>

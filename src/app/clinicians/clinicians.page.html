@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Clinicians</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="patient_add_btn" routerLink="/clinician-add"><ion-icon name="add-outline"></ion-icon></div>
+  <div class="ion-padding">
+    <ion-searchbar   placeholder="Search by name:"  (keyup)="searchByKeyword($event)"></ion-searchbar>
+    <ion-list *ngIf="clinician_list.length > 0">
+      <ion-list-header>
+        Clinician list ({{clinician_list.length}})
+      </ion-list-header>
+      <ion-item *ngFor="let clinician of clinician_list; let i = index">
+        <ion-avatar slot="start">          
+          <img *ngIf="!clinician.profile_image" src="assets/images/user.png">
+          <img *ngIf="clinician.profile_image" src="{{baseURI}}{{clinician.profile_image}}">
+        </ion-avatar>
+        <ion-label>
+          <p>Sno. - {{i+1}}</p>
+          <h2 class="captial">{{clinician.full_name}}</h2>
+          <h3>Created By : Admin</h3>
+          <ion-icon  class="patient_edit_icon" (click)="deleteClinicianById(clinician.id)" name="trash-outline"></ion-icon> 
+          <ion-icon routerLink="/edit-clinician/{{clinician.id}}" class="patient_edit_icon edit_icon_custom" name="create-outline"></ion-icon>
+        </ion-label>
+      </ion-item>  
+      <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>   
+    </ion-list>
+    <div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+  </div>
+  
+</ion-content>

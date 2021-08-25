@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Patient List</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <ion-searchbar  placeholder="Search Patient or FileNo:" (keyup)="searchByKeyword($event)"></ion-searchbar>
+    <ion-list *ngIf="patient_list.length > 0">
+      <ion-list-header>
+        Total Patient ({{patient_list.length}})
+      </ion-list-header>
+      <ion-item-group  lines="none" *ngFor="let patient of patient_list; let i = index">
+        <ion-item-divider lines="none" class="list_sr_no">
+          Sno. - {{i+1}}
+        </ion-item-divider>
+      <ion-item lines="full">
+        <ion-avatar slot="start">          
+          <img src="assets/images/user.png">
+        </ion-avatar>
+        <ion-label >          
+          <h2 class="captial">{{patient.name}} ({{patient.file_no}})</h2>
+          <h3>Clinic : {{patient.clinic_name}}</h3>
+          <p  class="captial"*ngIf="patient.full_name">Added By : {{patient.full_name}}</p>
+          <p class="captial" *ngIf="!patient.full_name">Added By : {{patient.username}}</p>
+          <h3>Admission Date : {{patient.entryDate | date :'MMM,dd yyyy'}}</h3>
+          <h3>Next Appointment : {{patient.scheduled_date | date :'MMM,dd yyyy'}} {{patient.scheduled_time}}</h3>
+        </ion-label>
+      </ion-item>     
+    </ion-item-group>
+    </ion-list>
+    <div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+  </div>
+  
+</ion-content>

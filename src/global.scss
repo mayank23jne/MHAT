@@ -1,0 +1,730 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+@font-face {
+font-family: medium;
+src: url(assets/montserrat/Montserrat-Medium.ttf);
+}
+@font-face {
+font-family: semiBold;
+src: url(assets/montserrat/Montserrat-SemiBold.ttf);
+}
+:root{
+--ion-color-primary:#3d72de !important;
+}
+
+  div {
+    font-family: medium;
+    font-size: 16px;
+  }
+.font_18 {
+  font-size: 18px !important ;
+}
+.font_16 {
+  font-size: 16px !important ;
+}
+body {
+	font-family: medium;
+	font-size: 16px;
+}
+.semiBold {
+	font-family: semiBold;
+	font-size: 16px;
+}
+.center {
+text-align: center;
+}
+.login_head {
+  background: #a6ce39;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  line-height: 24px;
+  height: 200px;
+  position: relative;
+}
+.head_text {
+  opacity: 65%;
+  margin-top: 30px;
+  font-size : 18px;
+}
+.curve_box {
+  margin-top: -50px;
+  position: relative;
+  height: 100px;
+  border-radius: 32px 32px 0px 0px;
+  background: white;
+}
+.logn_title {
+  margin: 15px 0px;
+}
+.center {
+    text-align: center;
+  }
+  input:focus {
+    outline: none !important;
+    border:1px solid #a6ce39  !important;
+  }
+  .testing_input input:focus {
+    outline: none !important;
+    border:none  !important;
+  }
+  .testing_input{
+    text-align: right !important;
+  }
+ textarea:focus {
+    outline: none !important;
+    border:1px solid #a6ce39 !important ;
+}
+ion-datetime{
+	font-family: medium !important;
+}
+.theme_color {
+    color: #a6ce39;
+  }
+  .link_color {
+    color: #3d72de;
+  }
+  .single_field {
+  margin-bottom: 25px;
+}
+.single_field input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border: 1px solid #bfbfbf;
+  border-radius: 50px;
+}
+.single_field textarea{
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border: 1px solid #bfbfbf;
+  border-radius: 10px;
+}
+.theme_btn {
+  --background: #a6ce39;
+  color: white;
+  height:45px;
+  --border-radius: 25px;
+  width: 150px;
+  font-size: inherit;
+  font-family: medium;
+  text-transform: unset;
+  --box-shadow:none;
+  width:100%;
+}
+.eye_box {
+    position: relative;
+}
+.eye_btn {
+    position: absolute;
+    right: 4px;
+    bottom: 10px;
+    background: none;
+}
+.eye_btn ion-icon {
+    font-size: 19px;
+	color: gray;
+}
+.logo {
+  text-align: center;
+  margin-top: 7px;
+  margin-bottom: 15px;
+}
+.logo img {
+  width: 150px;
+}
+.login_role_select{
+	  width: 100%;
+	  margin-top: 12px;
+	  border: 1px solid #bfbfbf;
+    border-radius: 50px;
+    height: 45px;
+    font-size: 14px;
+}
+// .patient-form ion-datetime{
+//   width: 100%;
+//   padding: 12px;
+//   margin-top: 12px;
+//   border: 1px solid #bfbfbf;
+//   border-radius: 50px;
+//   height: 42px;
+//   font-size: 14px;
+// }
+.role_label{
+	color:#76767f !important;
+	font-family: medium !important;
+	font-size: 16px;
+}
+.invalid-feedback {
+    color: red;
+    margin-top: 5px;
+	margin-left: 10px;
+	
+}
+.invalid-feedback div{
+	font-size: 14px !important;
+}
+.forget_text{
+  color: #a6ce39;
+  cursor: pointer;
+}
+.forget_back{
+  float: left !important;
+  font-size: 22px;
+}
+.forget_inst{
+  font-size: 14px;
+  color: #a6ce39;
+}
+.my-custom-class-new {
+  --border-radius: 50px;
+  text-align: center;
+  --background: #1e2023 !important;
+	opacity: 0.8;
+	color:white;
+  //font-size: 25px;
+  position: absolute;
+  top: -93px !important;
+}
+ion-toolbar.custom_header {
+  --background: #a6ce39;
+  color: white;
+  text-align: center;
+}
+.forget_text:focus {
+  outline: none !important;
+}
+.custom_btn:focus {
+  outline: none !important;
+}
+.forget_back{
+  outline: none !important;
+}
+.profile_img{
+  text-align:center;
+}
+.pro_image{
+    border-radius: 50%;
+    height: 101px;
+    cursor: pointer;
+    width: 100px;
+}
+.logo_img{
+	  border-radius: 50%;
+    height: 150px;
+    cursor: pointer;
+    width: 150px;
+    border: 3px solid #a6ce39;
+    object-fit: contain;
+}
+.logo_img.signature{
+  object-fit: fill !important;
+  border-radius: 0 !important;  
+}
+.logo_img.signature1{
+  border-radius: 0 !important;  
+}
+.signature_plus {
+  font-size: 22px;
+  position: absolute;
+  margin-top: -8px;
+  margin-left: -12px;
+  font-weight: bolder;
+  color: green
+}
+.img_div{
+	text-align:center;	
+}
+.img_div > input{
+    display: none;
+}
+.patient_add_btn{
+  position: fixed;
+  background: #a6ce39;
+  padding: 12px;
+  color: white;
+  font-size: 25px;
+  border-radius: 50%;
+  text-align: center;
+  height: 50px;
+  right: 10px;
+  bottom: 25px;
+  z-index: 999;
+  box-shadow: 1px 0px 14px #919fc7;
+}
+.patient_add_btn:focus {
+  outline: none !important;
+}
+.clinic_head{
+  background : #7a889121;
+  padding:10px;
+  font-size: 15px;
+}
+.patient_edit_icon{
+  position: absolute;
+  top: 35px;
+  right: 0;
+  font-size: 24px;
+  color: #a6ce39;
+}
+.custom_header ion-title{
+  margin-left: -15%
+}
+.error_msg{
+    text-align: center;
+    margin-top: 50px;
+}
+.medical_info {
+  background: #8080802b;
+  padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-size: 14px;
+  border-radius: 8px;    
+  margin-top: 30px;
+}
+.p_h_text{
+  //text-align: justify;
+  font-size: 14px;
+  color: grey;
+}
+.p_h_edit_icon{
+  position: absolute;
+  right: 35px;
+  font-size: 21px;
+  font-weight: bold;
+  color: #19a8ff;
+}
+.p_h_delete_icon{
+  font-size: 21px;
+  position: absolute;
+  right: 15px;
+  color: red;
+}
+// ion-fab{
+//   //bottom: 0;
+// }
+ion-fab-button[data-desc] {
+  position: relative;
+}
+
+ion-fab-button[data-desc]::after {
+  position: absolute;
+  content: attr(data-desc);
+  z-index: 1;
+  right: 55px;
+  bottom: 4px;
+  background-color: #a6ce39;
+  padding: 6px;
+  border-radius: 5px;
+  color: white;
+  box-shadow: 0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12);
+}
+.med_in{
+  min-height: 600px;
+}
+.c_name_label{
+  background: rgb(0 0 0 / 4%);
+  padding: 7px;
+  color: #666666;
+}
+.captial{
+  text-transform: capitalize !important;
+}
+.note_icon{
+  font-size: 37px;
+  padding-left: 34px;
+  color: #34495E;
+}
+ion-card-content.custome_size p {
+  font-size: 16px;
+  line-height: 1 !important;
+}
+ion-card-content.custome_size{
+  border-bottom: 1px solid #d7d8da;
+}
+.text-right{
+  text-align: right !important;
+}
+.font-20{
+  font-size: 20px !important;
+}
+ion-card.custom_card{
+  border-radius: 15px;
+  margin-left:1px !important;
+  margin-right:1px !important;
+}
+.presc_class{
+    margin-left: 15px;
+    color: black;
+    font-weight: bold;
+}
+.blue_color{
+  color: #2e4eec !important;
+}
+.folow_color{
+  color: #004d66 !important;
+}
+.invest_icon_del{
+    font-size: 20px;
+    color: red;
+}
+.invest_icon_edit{
+    font-size: 20px;
+    color: #19a8ff;
+}
+.edit_prescription_icon{
+  font-size: 20px;
+  color: #19a8ff;
+}
+.del_prescription_icon{
+  font-size: 20px;
+  color: red;
+}
+.repeat_prescription_icon{
+  font-size: 20px;
+  color: #1e1e1e;
+}
+.add_medicine {
+  top: 15px;
+  position: absolute;
+  right: 7px;
+  font-size: 25px;
+  font-weight: bold;
+}
+.my-custom-modal .modal-wrapper{
+  position: absolute;
+  overflow: hidden;
+  max-width: 90%;
+  
+  height: 450px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  border: 0;
+  box-shadow: 0 16px 20px rgba(0,0,0,.4);
+  background-color: #fafafa;
+  border-radius: 10px;
+}
+
+.preview-modal .modal-wrapper{
+  height: 315px !important;
+}
+.li-ionic4-datePicker .modal-wrapper{
+  position: absolute;
+  overflow: hidden;
+  max-width: 90%;
+  height: 450px;
+
+}
+.li-ionic4-datePicker ion-toolbar{
+  --background:#a6ce39 !important;
+}
+
+.close_model{
+  position: absolute;
+  top: 6px;
+  right: 11px;
+  font-size: 20px;
+
+}
+ion-fab-button.ion-color.ion-color-primary.md.ion-activatable.ion-focusable.hydrated {
+  --ion-color-base: #a6ce39 !important;
+}
+ion-segment-button.md.in-segment.segment-button-has-label.segment-button-has-label-only.segment-button-layout-icon-top.ion-activatable.ion-activatable-instant.ion-focusable.hydrated.segment-button-checked {
+  --background-checked: #a6ce39;
+  --color-checked: var(--ion-color-success-contrast);
+}
+ion-fab-button.ion-color.ion-color-primary.ios.ion-activatable.ion-focusable.hydrated {
+  --ion-color-base: #a6ce39 !important;
+}
+ion-segment-button.ios.in-segment.segment-button-has-label.segment-button-has-label-only.segment-button-layout-icon-top.ion-activatable.ion-activatable-instant.ion-focusable.hydrated.segment-button-checked {
+  --background-checked: #a6ce39;
+  
+}
+ion-checkbox {
+  background: #ffffff;
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-radius: 4px;
+  border-color: grey !important;
+  --height: 35px;
+  --width: 35px;
+  --checkmark-color: #a6ce39;
+  --background-checked: #ffffff;
+  --border-color: #ffffff;
+  --border-color-checked: #ffffff;
+}
+.custom_btn{
+  --border-color: #a6ce39;
+  color: #aedc30;
+}
+.detail_page_row{
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #1e1e1e;
+}
+.note_desc{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.model_dec{
+  color: #1e1e1ecf;
+  margin-bottom: 10px;
+  text-align: justify;
+}
+.recording_div{
+  width: 100%;
+}
+.custome_img_tag{
+  display: block;
+  margin: auto;
+  width: 50%;
+}
+.note_detail_img{
+  width: 100%;
+}
+.doc_row{
+  margin-left: 15px;
+}
+.imageName_div{
+  height: 100%;
+  width: 100%;
+}
+.export_btn{
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.list_sr_no{
+  color: black !important;
+  font-weight: bold;
+  margin-bottom: -10px;
+  margin-top: 15px;
+}
+ion-item-divider{
+  border-bottom:none;
+}
+.patient-form{
+  margin-top: 10px;
+  border: 1px solid #d7d8da;
+  padding: 9px;
+  border-radius: 5px;
+}
+.patient-form div{
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.patient-form .single_field {
+  margin-bottom: 10px;
+}
+.patient-form ion-button {
+  width: 150px;
+}
+.send_clinic_btn{
+  width: 200px;
+}
+.appoint_check_box{
+  margin-left: 10px;
+}
+.alert-radio-label.sc-ion-alert-md {
+  white-space: normal;
+}
+.alert-tappable.sc-ion-alert-md{
+  width: 270px;
+}
+.change-patient-status-modal .modal-wrapper{
+  position: absolute;
+  overflow: hidden;
+  max-width: 90%;  
+  height: 280px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  border: 0;
+  box-shadow: 0 16px 20px rgba(0,0,0,.4);
+  background-color: #fafafa;
+  border-radius: 10px;
+}
+.upload_form_div{
+  padding: 10px;
+  margin-top: 15px
+}
+.add_more_btn{
+    font-size: 20px;
+    float: right;
+    color: green;
+    font-weight: bold;
+    position: absolute;
+    right: 22px;
+    margin-top: 66px;
+}
+.single_field.after-add-more {
+  background: #80808021;
+  padding: 10px;
+  height: 275px;
+}
+.input_fields_wrap {
+  background: #80808021;
+  padding: 10px;
+}
+input.custom_input_increment {
+  width: 80px;
+}
+ion-col.custom_input_box ion-icon {
+  font-size: 35px;
+  color: #a7a7a7;
+  position: relative;
+  top: 13px;
+}
+.edit_appointment_icon{
+  position: absolute;
+  top: 78px;
+  z-index: 9999999999;
+  right: 22px;
+  font-size: 20px;
+  color: #a6ce39;
+}
+.edit_appointment_icon:focus{
+  outline: none !important;
+}
+.delete_app{
+  right: 0 !important;
+}
+.picker-opts{
+	max-width:none !important;
+}
+.edit_icon_custom{
+  right: 27px  !important;
+}
+
+.log_table, th, td {
+  border: 1px solid #808080;
+  border-collapse: collapse;
+  padding: 5px;
+  color: #1e1e1e;
+}
+.log_label{
+  text-align: center;
+  color: #1e2023;
+  font-weight: bold;
+}
+.margin-top-15{
+  margin-top:15px;
+}
+.date_class{
+  font-weight: bold;
+  font-size: 16px;
+  color: #a6ce39;
+}
+ion-select.md.in-item.hydrated.ng-touched.ng-dirty.ng-valid.ion-touched.ion-dirty.ion-valid {
+  max-width: 100%;
+  width: 100%;
+}
+ionic-selectable.ng-touched.ng-dirty.ng-valid{
+  max-width: 100%;
+  width: 100%;
+}
+.edit_form_remove_label ion-select{
+  max-width: 100%;
+  width: 100%;
+}
+.edit_form_remove_label ionic-selectable{
+  max-width: 100%;
+  width: 100%;
+}
+.download_img_div{
+  text-align: right;
+  margin-top: 15px;
+}
+.download_img_div img{
+  height: 35px;
+}
+.form_section__head_custom{
+  font-size: 20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  text-align: center;
+  color: black;
+  font-weight: bold;
+}
+.export_doc_btn{
+  position: absolute;
+    top: 46px;
+    right: 0;
+}
+#red_font{
+  color: red !important;
+}
+#green_font{
+  color: green !important;
+}
+#grey_font{
+  color: grey !important;
+}
+#black_font{
+  color: black !important;
+}
+.fab-list-side-top{
+  top: 0;
+    bottom: unset;
+}
+ion-card-content.custome_size.cust_pres_bg_color {
+  background: #ffddd7;
+}
+ion-card-content.custome_size.cust_notes_bg_color {
+  background: #e2ecc6;
+}
+.email_span{
+  font-size: 14px;
+    color: red;
+}
+.selectable {
+
+  -webkit-user-select: text;
+  
+  -moz-user-select: text;
+  
+  -ms-user-select: text;
+  
+  user-select: text;
+  
+  }
+  .patient_delete_button{
+    float: right;
+    font-size: 24px;
+    color: red;
+  }
+  

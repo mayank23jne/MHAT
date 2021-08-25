@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Assign Doctor To Clinic</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <div class="form">
+      <form name="form" id="p_form" (ngSubmit)="f.form.valid && addAssignDoctorForm(f)" #f="ngForm" method="post">
+        <div class="single_field">
+          <div class="form_label">Clinics</div>
+          <ion-item lines="none" class="login_role_select">
+            <ion-label class="role_label">Select Clinic</ion-label>
+            <ionic-selectable [(ngModel)]="clinic_name"  #clinic="ngModel" [ngClass]="{ 'is-invalid': f.submitted && clinic.invalid }" required [items]="clinic_list" itemValueField="id" itemTextField="name" [canSearch]="true" name="clinic_name">
+            </ionic-selectable>
+          </ion-item>
+          <div *ngIf="f.submitted && clinic.invalid" class="invalid-feedback">
+                  <div *ngIf="clinic.errors.required">Clinic is required</div>
+              </div>
+          </div>
+          <div class="single_field">
+            <div class="form_label">Select Doctor</div>
+              <ion-item lines="none" class="login_role_select" *ngFor="let doctor of doctor_list">
+                <ion-label>{{doctor.full_name}}</ion-label>
+                <ion-checkbox slot="end" class="custom_check_color"  name="doctor"  (ionChange)="getDoctor($event,doctor.id)" ></ion-checkbox>
+              </ion-item>
+            
+          </div>
+          <div class="single_field" style="text-align: center;">
+            <ion-button class="theme_btn" type="submit">
+               Assign
+            </ion-button>
+          </div>
+      </form>
+    </div>
+  </div>
+</ion-content>

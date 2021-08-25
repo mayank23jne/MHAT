@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+    <ion-title>Profile Apporval Request</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h3 class="log_label">Old Profile</h3>
+  <table class="log_table" style="width:100%">
+    <tr>
+      <th>Image</th>
+      <td><img *ngIf="new_detail.profile_image" src="{{baseURI}}{{new_detail.profile_image}}" height="50"/></td>
+    </tr>
+    <tr>
+      <th>Full Name</th>
+      <td>{{new_detail.full_name}}</td>
+    </tr>
+    <tr>
+      <th>Email</th>
+      <td>{{new_detail.email}}</td>
+    </tr>
+    <tr>
+      <th>Age</th>
+      <td>{{new_detail.age}}</td>
+    </tr>
+    <tr>
+      <th>Phone</th>
+      <td>{{new_detail.phone}}</td>
+    </tr>
+    <tr>
+      <th>Role Title</th>
+      <td>{{new_detail.designation}}</td>
+    </tr>
+    <tr>
+      <th>Address</th>
+      <td>{{new_detail.address}}</td>
+    </tr>
+  </table>
+  <h3 class="log_label">New Updates</h3>
+  <table class="log_table" style="width:100%">
+    <tr>
+      <th>Image</th>
+      <td><img *ngIf="new_detail.new_image && new_detail.new_image!='null'" src="{{baseURI}}{{new_detail.new_image}}" height="50"/></td>
+    </tr>
+    <tr>
+      <th>Full Name</th>
+      <td>{{new_detail.new_name}}</td>
+    </tr>
+    <tr>
+      <th>Email</th>
+      <td>{{new_detail.new_email}}</td>
+    </tr>
+    <tr>
+      <th>Age</th>
+      <td>{{new_detail.new_age}}</td>
+    </tr>
+    <tr>
+      <th>Phone</th>
+      <td>{{new_detail.new_phone}}</td>
+    </tr>
+    <tr>
+      <th>Role Title</th>
+      <td>{{new_detail.new_designation}}</td>
+    </tr>
+    <tr>
+      <th>Address</th>
+      <td>{{new_detail.new_address}}</td>
+    </tr>
+  </table>
+  <ion-button class="theme_btn margin-top-15" (click)="approveProfile(new_detail.id,new_detail.request_id)">Click here to approve</ion-button>
+</ion-content>

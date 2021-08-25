@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Appointments</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <p class="center theme_color clinic_head" *ngIf="clinic_name.length>0">{{clinic_name}}</p>
+    <div class="single_field">
+      <ion-item>
+        <ion-label>From Date</ion-label>
+        <ion-input class="testing_input" [(ngModel)]="from_date" name="from_date"  (click)="from_date_picker()"></ion-input>
+        <!-- <ion-datetime displayFormat="MMM DD, YYYY" (ionChange)="selectedAppointment()" [(ngModel)]="from_date"  name="from_date" ></ion-datetime> -->
+      </ion-item>
+    </div>
+    <div class="single_field">
+      <ion-item>
+        <ion-label>To Date</ion-label>
+        <ion-input class="testing_input" [(ngModel)]="to_date" name="to_date" (click)="to_date_picker()"></ion-input>
+        <!-- <ion-datetime displayFormat="MMM DD, YYYY" (ionChange)="selectedAppointment()" [(ngModel)]="to_date"  name="to_date" ></ion-datetime> -->
+      </ion-item>
+    </div>
+    <div class="single_field" style="text-align: center;">
+      <ion-button class="theme_btn" type="submit" (click)="selectedAppointment()">
+         Search
+      </ion-button>
+    </div>
+    <ion-list *ngIf="appoint_list.length > 0">
+      <ion-list-header>
+        Appointment List ({{appoint_list.length}})
+      </ion-list-header>
+      <div class="export_btn" ><ion-button shape="round" color="dark" (click)='makePdf()' fill="outline"><ion-icon name="download-outline"></ion-icon></ion-button></div>
+      <ion-item-group  lines="none" *ngFor="let patient of appoint_list; let i = index">
+      <ion-item lines="full">
+        <ion-avatar slot="start">          
+          <img src="assets/images/user.png">
+          
+        </ion-avatar>
+        <ion-label>
+          <h2 class="captial">{{patient.patient_name}} ({{patient.file_no}})</h2>
+          <h3 *ngIf="patient.full_name!=''">Scheduled By : {{patient.full_name}}</h3>
+          <h3 *ngIf="patient.full_name==''">Scheduled By : {{patient.short_name}}</h3>
+          <h3>Date : {{patient.date}}</h3>
+          <h3>Time : {{patient.time}}</h3>
+        </ion-label>
+      </ion-item>
+      </ion-item-group> 
+      
+    </ion-list>
+    <div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+  </div>
+</ion-content>

@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+    <ion-title>Assign Volunteer</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <div class="ion-padding">
+    <p class="center theme_color clinic_head" *ngIf="patient_name">{{patient_name.name}}</p>
+    <!-- <ion-searchbar  placeholder="Search by name:" (search)="searchByKeyword($event)"></ion-searchbar> -->
+    <ion-list *ngIf="volunteer_list.length > 0">
+      <ion-list-header>
+        Volunteer List
+      </ion-list-header>
+      <ion-item *ngFor="let volunteer of volunteer_list; let i = index" (click)="assignPatient(volunteer.id)">
+        <ion-avatar slot="start">          
+          <img src="assets/images/user.png">
+        </ion-avatar>
+        <ion-label>
+          <p>Sno. - {{i+1}}</p>
+          <h2 class="captial">{{volunteer.full_name}}</h2>
+        </ion-label>
+      </ion-item>     
+    </ion-list>
+    <div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+  </div>
+</ion-content>

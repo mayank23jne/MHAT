@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+    <ion-title>New Clinic</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <div class="form">
+	  <form name="form" id="p_form" (ngSubmit)="f.form.valid && clinicForm(f)" #f="ngForm" method="post">
+      <div class="single_field">
+        <div class="form_label">Clinic Name</div>
+        <input [(ngModel)]="full_name"  name="full_name" #f_name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && f_name.invalid }" required placeholder="Enter clinic name">
+        <div *ngIf="f.submitted && f_name.invalid" class="invalid-feedback">
+          <div *ngIf="f_name.errors.required">Clinic name is required</div>
+        </div>
+       </div>
+      <div class="single_field">
+        <div class="form_label">Email</div>
+        <input  [(ngModel)]="email"  name="email" #email_id="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email_id.invalid }"  email placeholder="Enter clinic email">
+        <div *ngIf="f.submitted && email_id.invalid" class="invalid-feedback">
+          <div *ngIf="email_id.errors.email">Must be a valid email address</div>
+        </div>
+      </div>
+      <!-- <div class="single_field">
+        <div class="form_label">Mobile Number</div>
+        <input type="number" [(ngModel)]="phone"  #phone_no="ngModel" [ngClass]="{ 'is-invalid': f.submitted && phone_no.invalid }" required    name="phone" placeholder="Enter phone no">
+        <div *ngIf="f.submitted && phone_no.invalid" class="invalid-feedback">
+          <div *ngIf="phone_no.errors.required">Phone number is required</div>
+        </div>
+        <input type="number" [(ngModel)]="phone2" name="phone2" placeholder="Enter phone no">
+      </div> -->
+      <div class="single_field">
+        <div class="form_label">Land Line</div>
+        <input  [(ngModel)]="landline"   name="landline" placeholder="Enter land line number">       
+      </div>
+      <div class="single_field">
+        <div class="form_label">District</div>
+        <input  [(ngModel)]="city"  #citys="ngModel" [ngClass]="{ 'is-invalid': f.submitted && citys.invalid }" required    name="city" placeholder="Enter district">
+        <div *ngIf="f.submitted && citys.invalid" class="invalid-feedback">
+          <div *ngIf="citys.errors.required">District is required</div>
+        </div>
+      </div>
+      <div class="single_field">
+        <div class="form_label">Place</div>
+        <input  [(ngModel)]="street"  #streets="ngModel" [ngClass]="{ 'is-invalid': f.submitted && streets.invalid }" required    name="street" placeholder="Enter place">
+        <div *ngIf="f.submitted && streets.invalid" class="invalid-feedback">
+          <div *ngIf="streets.errors.required">Place is required</div>
+        </div>
+      </div>
+      <div class="single_field">
+        <div class="form_label">Pincode</div>
+        <input  [(ngModel)]="pincode" name="pincode" placeholder="Enter pincode">
+      </div>
+      <div class="single_field">
+        <div class="form_label">Address</div>
+        <textarea [(ngModel)]="address" rows="4" cols="35"   name="address" placeholder="Enter address" #add="ngModel" [ngClass]="{ 'is-invalid': f.submitted && add.invalid }" required></textarea>
+        <div *ngIf="f.submitted && add.invalid" class="invalid-feedback">
+          <div *ngIf="add.errors.required">Address is required</div>
+        </div>
+      </div>
+      <div class="single_field">
+        <div class="form_label">Contact Person</div>
+        <input  [(ngModel)]="contact_person" name="contact_person" placeholder="Enter contact person">
+      </div>
+      <div class="single_field">
+        <div class="form_label">Mobile Number</div>
+        <input type="number" [(ngModel)]="phone" name="phone" placeholder="Enter mobile no">
+    </div>
+    <div class="single_field">
+        <div class="form_label">Pan Card</div>
+        <input  [(ngModel)]="pan_card" name="pan_card" placeholder="Enter pan card">
+      </div>      
+      <div class="single_field" style="text-align: center;">
+        <ion-button class="theme_btn" type="submit">
+           Submit
+        </ion-button>
+      </div>
+    </form>
+    </div>
+  </div>
+</ion-content>

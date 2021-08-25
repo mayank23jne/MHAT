@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+    <ion-title>Re-Schedule Appointmant</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <p class="center theme_color clinic_head captial">{{appointment_details.patient_name}}</p>
+    <div class="form">
+	  <form name="form" id="p_form" (ngSubmit)="f.form.valid && patientAppointmentForm(f)" #f="ngForm" method="post">
+      <!-- <div class="single_field">
+        <div class="form_label">Doctor</div>
+        <ion-item lines="none" class="login_role_select">
+          <ion-label class="role_label">Select Doctor</ion-label>
+          <ion-select [(ngModel)]="appointment_details.doctor_id" #genders="ngModel" [ngClass]="{ 'is-invalid': f.submitted && genders.invalid }" required   name="doctor_id">
+              <ion-select-option  *ngFor="let doctors of doctor_list" value="{{doctors.doctor_user_id}}" >{{doctors.doctor_name}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="f.submitted && genders.invalid" class="invalid-feedback">
+            <div *ngIf="genders.errors.required">Doctor is required</div>
+        </div>
+      </div> -->
+      
+      <div class="single_field">
+        <ion-item > 
+          <ion-label >Appointment Date</ion-label>
+          <ion-input class="testing_input"  [(ngModel)]="myDate" name="myDate_new" (click)="myFun()"></ion-input>
+        </ion-item>
+      </div>
+      <div class="single_field">
+        <ion-item>
+          <ion-label>Appointment Time</ion-label>
+          <p id="t_time">{{myTime}}<p>
+          <ion-datetime  displayFormat="HH:mm" minuteValues="0,15,30" (ionChange)="getTime($event)" ></ion-datetime>
+        </ion-item>
+      </div>
+      <div class="single_field" style="text-align: center;">
+        <ion-button class="theme_btn" type="submit">
+          Re-Scheduled
+        </ion-button>
+      </div>
+    </form>
+    </div>
+  </div>
+</ion-content>

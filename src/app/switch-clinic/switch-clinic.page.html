@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Switch Clinic</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <div class="form">
+	  <form name="form" id="p_form" (ngSubmit)="f.form.valid && changeClinic(f)" #f="ngForm" method="post">
+      <div class="single_field">
+        <div class="form_label">Clinic</div>
+        <ion-item lines="none" class="login_role_select">
+          <ion-label class="role_label">Select Clinic</ion-label>
+          <ionic-selectable [(ngModel)]="clinic_d"  #c_name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && c_name.invalid }" required [items]="clinics" itemValueField="id" itemTextField="clinic_place_name" [canSearch]="true"  name="clinic_name">
+          </ionic-selectable>
+        </ion-item>
+        <div *ngIf="f.submitted && c_name.invalid" class="invalid-feedback">
+          <div *ngIf="c_name.errors.required">Clinic is required</div>
+        </div>
+        </div>
+      <div class="single_field" style="text-align: center;">
+        <ion-button class="theme_btn" type="submit">
+           Change
+        </ion-button>
+      </div>
+    </form>
+    </div>
+  </div>
+
+</ion-content>

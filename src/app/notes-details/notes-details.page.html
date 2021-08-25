@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Patient Follow Up Notes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <p class="center theme_color clinic_head" *ngIf="clinic_name.length>0">{{clinic_name}}</p>
+    <ion-searchbar  placeholder="Search by patient name:" (keyup)="searchByKeyword($event)"></ion-searchbar>
+    <ion-list *ngIf="patient_list.length > 0">
+      <ion-list-header>
+        Patient List ({{patient_list.length}})
+      </ion-list-header>
+      <ion-item *ngFor="let patient of patient_list; let i = index">
+        <ion-avatar slot="start">          
+          <img src="assets/images/user.png">
+        </ion-avatar>
+        <ion-label>
+          <p>Sno. - {{i+1}}</p>
+          <h2 class="captial">{{patient.name}} ({{patient.file_no}})</h2>        
+          <ion-icon routerLink="/patient-note-detail/{{patient.id}}" class="patient_edit_icon" name="eye-outline"></ion-icon>  
+       </ion-label>
+      </ion-item>     
+    </ion-list>
+    <div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+  </div>
+</ion-content>

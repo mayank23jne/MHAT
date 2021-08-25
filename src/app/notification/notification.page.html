@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Notification</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <ion-list *ngIf="volunteer_list.length > 0">
+      <ion-list-header>
+        Volunteer list ({{volunteer_list.length}})
+      </ion-list-header>
+      <ion-item *ngFor="let volunteer of volunteer_list; let i = index">
+        <ion-avatar slot="start">          
+          <img *ngIf="!volunteer.profile_image" src="assets/images/user.png">
+          <img *ngIf="volunteer.profile_image" src="{{baseURI}}{{volunteer.profile_image}}">
+        </ion-avatar>
+        <ion-label>
+          <p>Sno. - {{i+1}}</p>
+          <h2 class="captial">{{volunteer.full_name}}</h2>
+          <h3>Created By : {{volunteer.user_created_by}}</h3>
+          <h3>On Date : {{volunteer.entryDate}}</h3>
+          <ion-button *ngIf="volunteer.status==0 && role=='clinicadmin'" (click)="changeVolunteerStatus(volunteer.id)" shape="round" fill="outline"   class="theme_color custom_btn">Pending</ion-button>
+          <!-- <ion-icon routerLink="/doctor-details/{{doctor.id}}" class="patient_edit_icon" name="create-outline"></ion-icon> -->
+        </ion-label>
+      </ion-item>     
+    </ion-list>
+    <div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+  </div>
+</ion-content>

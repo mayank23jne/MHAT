@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "749059619241",
+    "project_id": "mhat-app-f1d67",
+    "storage_bucket": "mhat-app-f1d67.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:749059619241:android:6bfcdb98ddc20f592a2cb8",
+        "android_client_info": {
+          "package_name": "com.mhat.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "749059619241-g6gaf1s7alutt28ctc5d42m0bphc8379.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC75ik3Zm4PA2vurOBPVX9iY5INEFlwZVM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "749059619241-g6gaf1s7alutt28ctc5d42m0bphc8379.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

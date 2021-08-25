@@ -1,0 +1,79 @@
+<ion-content>
+  <div class="login_head">
+    <div class="head_text">
+		
+		Sign In
+	
+    </div>
+  </div>
+<div class="curve_box">
+  <div class="ion-padding">
+<div class="logo">
+    <img src="assets/images/mhat_new_logo.png">
+</div>  
+    <!-- <div class="logn_title center semiBold font_18 theme_color">Sign In</div> -->
+    <div class="form">
+	<form name="form" (ngSubmit)="f.form.valid && login(f)" #f="ngForm" method="post">
+      <div class="single_field">
+        <div class="form_label">Username</div>
+        <input  [(ngModel)]="u_name" #name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" required   name="u_name" placeholder="Enter username">
+		<div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
+            <div *ngIf="name.errors.required">Username is required</div>
+      </div>
+      </div>
+	  
+      <div class="single_field">
+        <div class="form_label">Password</div>
+        <input style="padding-right: 40px;" type="{{type}}" [(ngModel)]="password" #pass="ngModel" [ngClass]="{ 'is-invalid': f.submitted && pass.invalid }" required name="password" placeholder="Enter your password">
+		<div class="eye_box">
+		<button *ngIf="!showPass" ion-button clear class="eye_btn" color="dark" type="button" item-right (click)="showPassword()"> 
+			<ion-icon name="eye" class="eye_icon" ></ion-icon>
+		</button>
+	   <button *ngIf="showPass" ion-button clear color="dark" type="button" class="eye_btn" item-right (click)="showPassword()"> 
+		  <ion-icon name="eye-off" class="eye_icon"></ion-icon>
+	   </button>
+	   </div>
+		<div *ngIf="f.submitted && pass.invalid" class="invalid-feedback">
+            <div *ngIf="pass.errors.required">Password is required</div>
+        </div>
+      </div>
+	  <div class="single_field">
+		<div class="form_label">Role</div>
+		<ion-item lines="none" class="login_role_select">
+		  <ion-label class="role_label">Select Role</ion-label>
+		  <ion-select [(ngModel)]="role" #role_name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && role_name.invalid }" required   name="role" (ionChange)="selectRole($event.target.value)">
+			  <ion-select-option value="clinicadmin" >MHAT Admin</ion-select-option>
+        <ion-select-option value="doctor">Psychiatrist</ion-select-option>
+        <ion-select-option value="clinician" >Clinician</ion-select-option>
+        <ion-select-option value="mhw">MHW</ion-select-option>   
+        <ion-select-option value="volunteer">Volunteer</ion-select-option>
+		  </ion-select>
+		</ion-item>
+		<div *ngIf="f.submitted && role_name.invalid" class="invalid-feedback">
+            <div *ngIf="role_name.errors.required">Role is required</div>
+        </div>
+	  </div>
+	  <div class="single_field" *ngIf="showclinicList == true" >
+	  <div class="form_label">Clinic</div>
+		<ion-item lines="none" class="login_role_select">
+		  <ion-label class="role_label">Clinic</ion-label>
+		  <ionic-selectable [(ngModel)]="clinic_n"  #clinic_name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && clinic_name.invalid }" required [items]="clinic" itemValueField="id" itemTextField="clinic_place_name" [canSearch]="true" (onChange)="clinicChange($event)" name="clinic_n">
+		  </ionic-selectable>
+		</ion-item>
+		<div *ngIf="f.submitted && clinic_name.invalid" class="invalid-feedback">
+            <div *ngIf="clinic_name.errors.required">Clinic is required</div>
+        </div>
+	  </div>
+	 
+      <div class="single_field" style="text-align: center;">
+        <ion-button class="theme_btn" type="submit">
+           Sign In
+        </ion-button>
+      </div>
+    </form>
+    <p routerLink="/forget-password" class="center forget_text">Forget Password ?</p>
+    </div>
+  </div>
+</div>  
+
+</ion-content>

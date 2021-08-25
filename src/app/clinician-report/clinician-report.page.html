@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Clinicians Report</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <ion-searchbar   placeholder="Search by name:"  (keyup)="searchByKeyword($event)"></ion-searchbar>
+    <!-- <div class="download_img_div"><img src="assets/images/file-download.png" (click)="generateReport()"></div>  -->
+    <div class="download_img_div">
+     <ion-button shape="round" color="dark" fill="outline" (click)="exportToExcel(clinician_list,'clinician_report')"><ion-icon name="cloud-download-outline"></ion-icon>&nbsp;Download</ion-button>
+      <ion-button shape="round" color="dark" (click)='generateReport()' fill="outline"><ion-icon name="download-outline"></ion-icon></ion-button></div>
+    <ion-list *ngIf="clinician_list.length > 0">
+      
+      <ion-list-header>
+        Clinician list ({{clinician_list.length}})
+      </ion-list-header>
+      <ion-item *ngFor="let clinician of clinician_list; let i = index">
+        <ion-avatar slot="start">          
+          <img *ngIf="!clinician.profile_image" src="assets/images/user.png">
+          <img *ngIf="clinician.profile_image" src="{{baseURI}}{{clinician.profile_image}}">
+        </ion-avatar>
+        <ion-label>
+          <p>Sno. - {{i+1}}</p>
+          <h2 class="captial">{{clinician.full_name}}</h2>
+          <h3>Created By : Admin</h3>          
+        </ion-label>
+      </ion-item>
+      <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>      
+    </ion-list>
+    <div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+  </div>
+  
+</ion-content>

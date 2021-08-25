@@ -1,0 +1,27 @@
+<ion-content>
+  <h3 class="center">Change Patient Status</h3>
+  <ion-icon class="close_model" (click)="closeModal()" name="close"></ion-icon>
+  <div class="ion-padding">
+    <div class="form edit_form_remove_label">
+      <form name="form" id="p_form" (ngSubmit)="f.form.valid && changeStatus(f)" #f="ngForm" method="post">
+        <div class="single_field">
+          <div class="form_label">Status</div>
+            <ion-item lines="none" class="login_role_select">
+              <ion-label class="role_label">Select Status</ion-label>
+              <ion-select [(ngModel)]="StatusId"  name="status" #stt="ngModel" [ngClass]="{ 'is-invalid': f.submitted && stt.invalid }" required>
+                <ion-select-option *ngFor="let st of status_array" value="{{st}}">{{st}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <div *ngIf="f.submitted && stt.invalid" class="invalid-feedback">
+              <div *ngIf="stt.errors.required">Status is required</div>
+           </div>
+        </div>
+        <div class="single_field" style="text-align: center;">
+          <ion-button class="theme_btn" type="submit">
+             Submit
+          </ion-button>
+        </div>
+      </form>
+      </div>
+  </div>
+  </ion-content>

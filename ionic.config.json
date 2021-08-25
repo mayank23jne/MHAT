@@ -1,0 +1,7 @@
+{
+  "name": "MHAT",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

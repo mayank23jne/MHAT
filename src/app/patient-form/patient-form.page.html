@@ -1,0 +1,866 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-back-button *ngIf="canGoBack"></ion-back-button>
+			<ion-menu-button *ngIf="!canGoBack"></ion-menu-button>
+		</ion-buttons>
+    <ion-title>New Patient</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <div class="form">     
+        <ion-segment scrollable  value="step-1" [(ngModel)]="type" >
+          <ion-segment-button [disabled]="type != 'step-1'" value="step-1" >
+            <ion-label>Step-1</ion-label>
+          </ion-segment-button>
+          <ion-segment-button [disabled]="type != 'step-2'"   value="step-2">
+            <ion-label>Step-2</ion-label>
+          </ion-segment-button>
+          <ion-segment-button [disabled]="type != 'step-3'" value="step-3">
+            <ion-label>Step-3</ion-label>
+          </ion-segment-button>
+          <ion-segment-button [disabled]="type != 'step-4'" value="step-4">
+            <ion-label>Step-4</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+        <div [ngSwitch]="type" class="patient-form">
+          <form name="form" id="p_form" (ngSubmit)="f.form.valid && patientForm(f)" #f="ngForm" method="post">
+            <diV  *ngSwitchCase="'step-1'">
+              <div class="single_field">
+                <div class="form_label">Patient name</div>
+                <ion-row>
+                  <ion-col size="4">
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label  class="role_label">Unassigned</ion-label>
+                        <ion-select [(ngModel)]="prefix" #prefixs="ngModel" [ngClass]="{ 'is-invalid': f.submitted && prefixs.invalid }" required   name="prefix">
+                        <ion-select-option *ngFor="let prefixss of prefix_array" value="{{prefixss}}">{{prefixss}}</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && prefixs.invalid" class="invalid-feedback">
+                      <div *ngIf="prefixs.errors.required">Prefix is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="8">
+                    <input [(ngModel)]="patient_fname"  name="patient_fname" #p_name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && p_name.invalid }" required placeholder="Enter first name">
+                    <div *ngIf="f.submitted && p_name.invalid"  class="invalid-feedback">
+                      <div *ngIf="p_name.errors.required">Patient name is required</div>
+                    </div>
+                  </ion-col>
+                </ion-row> 
+                <ion-row>
+                  <ion-col size="4">
+                    <input [(ngModel)]="patient_mname"  name="patient_mname" #p_mname="ngModel" [ngClass]="{ 'is-invalid': f.submitted && p_mname.invalid }" required placeholder="">
+                    <div *ngIf="f.submitted && p_mname.invalid" class="invalid-feedback">
+                      <div *ngIf="p_mname.errors.required">Middle name is required</div>
+                    </div>
+                  </ion-col>
+                  
+                  <ion-col size="8">
+                    <input [(ngModel)]="patient_lname"  name="patient_lname" #p_lname="ngModel" [ngClass]="{ 'is-invalid': f.submitted && p_lname.invalid }" required placeholder="Enter last name">
+                    <div *ngIf="f.submitted && p_lname.invalid" class="invalid-feedback">
+                      <div *ngIf="p_lname.errors.required">Last name is required</div>
+                    </div>
+                  </ion-col>                  
+                </ion-row>                
+               </div>
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">File no.</div>
+                    <input [(ngModel)]="file_no"  name="file_no" #file_nos="ngModel" [ngClass]="{ 'is-invalid': f.submitted && file_nos.invalid }" required  placeholder="Enter fileno">
+                    <div *ngIf="f.submitted && file_nos.invalid" class="invalid-feedback">
+                      <div *ngIf="file_nos.errors.required">File no is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label" >Phone</div>
+                      <input type="number" [(ngModel)]="phone" #mobile="ngModel" [ngClass]="{ 'is-invalid': f.submitted && mobile.invalid }" required name="phone"  placeholder="Enter phone">
+                      <div *ngIf="f.submitted && mobile.invalid" class="invalid-feedback">
+                        <div *ngIf="mobile.errors.required">Mobile no is required</div>
+                      </div>
+                    </ion-col>
+                </ion-row>                
+               </div>
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">External Id</div>
+                    <input [(ngModel)]="external_id"  name="external_id" #external="ngModel" [ngClass]="{ 'is-invalid': f.submitted && external.invalid }" required  placeholder="Enter external id">
+                    <div *ngIf="f.submitted && external.invalid" class="invalid-feedback">
+                      <div *ngIf="external.errors.required">External id is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label" >DOB</div>
+                      <input [(ngModel)]="dob"  name="dob" #dobs="ngModel" [ngClass]="{ 'is-invalid': f.submitted && dobs.invalid }" required  placeholder="Select Date" (click)="openDatePicker()" />
+                      <div *ngIf="f.submitted && dobs.invalid" class="invalid-feedback">
+                        <div *ngIf="dobs.errors.required">DOB is required</div>
+                      </div>
+                  </ion-col>
+                </ion-row>                
+               </div>
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Gender</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Gender</ion-label>
+                      <ion-select [(ngModel)]="gender" #genders="ngModel" [ngClass]="{ 'is-invalid': f.submitted && genders.invalid }" required   name="gender">
+                        <ion-select-option value="">Select Gender</ion-select-option>
+                        <ion-select-option  *ngFor="let genders of gender_array" value="{{genders}}" >{{genders}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && genders.invalid" class="invalid-feedback">
+                        <div *ngIf="genders.errors.required">Gender is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label">Marital status</div>
+                      <ion-item lines="none" class="login_role_select">
+                        <ion-label class="role_label">Select Marital Status</ion-label>
+                        <ion-select [(ngModel)]="m_status" #m_st="ngModel"   [ngClass]="{ 'is-invalid': f.submitted && m_st.invalid }" required   name="m_status">
+                            <ion-select-option *ngFor="let marital of m_status_array" value="{{marital}}" >{{marital}}</ion-select-option>
+                        </ion-select>
+                      </ion-item>
+                      <div *ngIf="f.submitted && m_st.invalid" class="invalid-feedback">
+                          <div *ngIf="m_st.errors.required">Marital status is required</div>
+                      </div>
+                  </ion-col>
+                </ion-row>                
+               </div>
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Age</div>
+                    <input type="number" [(ngModel)]="age"    name="age" placeholder="Enter age" disabled="true" #ages="ngModel" [ngClass]="{ 'is-invalid': f.submitted && ages.invalid }" required>
+                    <div *ngIf="f.submitted && ages.invalid" class="invalid-feedback">
+                      <div *ngIf="ages.errors.required">Age is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label">Religion</div>
+                      <ion-item lines="none" class="login_role_select">
+                        <ion-label class="role_label">Select Religion</ion-label>
+                        <ion-select [(ngModel)]="religions"  name="religions" #rel="ngModel" [ngClass]="{ 'is-invalid': f.submitted && rel.invalid }" required>
+                            <ion-select-option *ngFor="let res_array of religions_array" value="{{res_array}}" >{{res_array}}</ion-select-option>
+                        </ion-select>
+                      </ion-item>
+                      <div *ngIf="f.submitted && rel.invalid" class="invalid-feedback">
+                        <div *ngIf="rel.errors.required">Religion is required</div>
+                      </div>
+                  </ion-col>
+                </ion-row>                
+               </div>
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Caste</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Caste</ion-label>
+                      <ion-select [(ngModel)]="caste"  name="caste" #casts="ngModel" [ngClass]="{ 'is-invalid': f.submitted && casts.invalid }" required>
+                          <ion-select-option *ngFor="let cast of cast_array" value="{{cast}}" >{{cast}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && casts.invalid" class="invalid-feedback">
+                      <div *ngIf="casts.errors.required">Caste is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label">House name</div>
+                    <input  [(ngModel)]="house_name"  name="house_name" placeholder="Enter house name" #house="ngModel" [ngClass]="{ 'is-invalid': f.submitted && house.invalid }" >
+                    <div *ngIf="f.submitted && house.invalid" class="invalid-feedback">
+                      <div *ngIf="house.errors.required">House name is required</div>
+                    </div>
+                  </ion-col>
+                  
+                </ion-row>                
+               </div>
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Place</div>
+                    <input  [(ngModel)]="place"    name="place" placeholder="Enter place" #pl="ngModel" [ngClass]="{ 'is-invalid': f.submitted && pl.invalid }" >
+                    <div *ngIf="f.submitted && pl.invalid" class="invalid-feedback">
+                      <div *ngIf="pl.errors.required">Place is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label">District</div>
+                    <ion-item lines="none" class="login_role_select" >
+                      <ion-label class="role_label">Select District</ion-label>
+                      <ion-select [(ngModel)]="district"  name="district" #dis="ngModel" [ngClass]="{ 'is-invalid': f.submitted && dis.invalid }" required>
+                          <ion-select-option *ngFor="let d of district_array" value="{{d}}" >{{d}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && dis.invalid" class="invalid-feedback">
+                      <div *ngIf="dis.errors.required">District is required</div>
+                    </div>
+                  </ion-col>
+                </ion-row>                
+               </div>
+               <div class="single_field" style="text-align: center;">
+                <input type="hidden" [(ngModel)]="btn_1" name="btn_1">
+                <ion-button class="theme_btn" type="submit">
+                   Next
+                </ion-button>
+              </div>
+            </diV>
+            <diV  *ngSwitchCase="'step-2'">
+              <div class="single_field">
+                <div class="form_label">Children</div>
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Unassigned</ion-label>
+                      <ion-select [(ngModel)]="child" #ch="ngModel" [ngClass]="{ 'is-invalid': f.submitted && ch.invalid }" required  name="child" (ionChange)="childrenChange($event)">
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && ch.invalid" class="invalid-feedback">
+                      <div *ngIf="ch.errors.required">Children is required</div>
+                    </div>
+                  </ion-col>
+                </ion-row>  
+                <ion-row>
+                  <ion-col size="4" class="custom_input_box">
+                    <!-- <ion-icon name="remove-circle-outline" (click)="decrement('male')"></ion-icon> -->
+                    <input  type="number" min="0" [(ngModel)]="child_male" disabled="{{isDisabled}}" name="child_male"  placeholder="male">
+                    <!-- <ion-icon name="add-circle-outline" (click)="increment('male')"></ion-icon> -->
+                  </ion-col>
+                  <ion-col size="4" class="custom_input_box" style="text-align: right;">
+                    <!-- <ion-icon name="remove-circle-outline" (click)="decrement('female')"></ion-icon> -->
+                    <input type="number" min="0" [(ngModel)]="child_female"  name="child_female" disabled="{{isDisabled}}" placeholder="female">
+                    <!-- <ion-icon name="add-circle-outline" (click)="increment('female')"></ion-icon> -->
+                  </ion-col>
+                  <ion-col size="4" class="custom_input_box" style="text-align: right;">
+                    <!-- <ion-icon name="remove-circle-outline" (click)="decrement('female')"></ion-icon> -->
+                    <input type="number" min="0" [(ngModel)]="child_other"  name="child_other" disabled="{{isDisabled}}" placeholder="other">
+                    <!-- <ion-icon name="add-circle-outline" (click)="increment('female')"></ion-icon> -->
+                  </ion-col>
+                </ion-row>                
+               </div>
+               <div class="single_field">
+                <div class="form_label">Siblings</div>
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Unassigned</ion-label>
+                      <ion-select [(ngModel)]="sibling"  name="sibling" (ionChange)="siblingChange($event)" #sb="ngModel" [ngClass]="{ 'is-invalid': f.submitted && sb.invalid }" required >
+                          <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && sb.invalid" class="invalid-feedback">
+                      <div *ngIf="sb.errors.required">Sibling is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="4">
+                    <input type="number" min="0" [(ngModel)]="sibling_male" disabled="{{isSiblingDisabled}}"  name="sibling_male"  placeholder="male">
+                  </ion-col>
+                  <ion-col size="4">
+                    <input type="number" min="0" [(ngModel)]="sibling_female" disabled="{{isSiblingDisabled}}"  name="sibling_female" placeholder="female">
+                  </ion-col>
+                  <ion-col size="4">
+                    <input type="number" min="0" [(ngModel)]="sibling_other" disabled="{{isSiblingDisabled}}"  name="sibling_other" placeholder="other">
+                  </ion-col>
+                </ion-row>                 
+               </div>
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Educational Status</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Education</ion-label>
+                      <ion-select [(ngModel)]="education"  name="education" #ed="ngModel" [ngClass]="{ 'is-invalid': f.submitted && ed.invalid }" required>
+                        <ion-select-option *ngFor="let edu of education_array" value="{{edu}}">{{edu}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && ed.invalid" class="invalid-feedback">
+                      <div *ngIf="ed.errors.required">Educational status is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label">Stay</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Stay</ion-label>
+                      <ion-select [(ngModel)]="stay"  name="stay" #st="ngModel" [ngClass]="{ 'is-invalid': f.submitted && st.invalid }" required>
+                          <ion-select-option *ngFor="let stays of stay_array" value="{{stays}}">{{stays}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && st.invalid" class="invalid-feedback">
+                      <div *ngIf="st.errors.required">Stay is required</div>
+                    </div>
+                  </ion-col>
+                </ion-row>                
+               </div>
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Occupation</div>
+                    <ion-item lines="none" class="login_role_select" >
+                      <ion-label class="role_label">Select Occupation</ion-label>
+                      <ion-select [(ngModel)]="occupation"  name="occupation" (ionChange)="occupationChange($event)" #occ="ngModel" [ngClass]="{ 'is-invalid': f.submitted && occ.invalid }" required>
+                          <ion-select-option *ngFor="let o of occupation_array" value="{{o}}">{{o}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && occ.invalid" class="invalid-feedback">
+                      <div *ngIf="occ.errors.required">Occupation is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label">Type of job</div>
+                    <input [(ngModel)]="toj"  name="toj" disabled="{{isTypeJobDisabled}}" placeholder="">
+                  </ion-col>
+                </ion-row>                
+               </div>
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="12">
+                    <div class="form_label">Income of the patient</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Patient Income</ion-label>
+                      <ion-select [(ngModel)]="patient_income"  name="patient_income" #pti="ngModel" [ngClass]="{ 'is-invalid': f.submitted && pti.invalid }" required>
+                          <ion-select-option  *ngFor="let pi of patient_income_array" value="{{pi}}">{{pi}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && pti.invalid" class="invalid-feedback">
+                      <div *ngIf="pti.errors.required">Patient income is required</div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+               </div>
+                  <!-- <ion-col size="6">
+                    <div class="form_label">Other earning members</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Earning Members</ion-label>
+                      <ion-select [(ngModel)]="other_e_member"  name="other_e_member" #oem="ngModel" [ngClass]="{ 'is-invalid': f.submitted && oem.invalid }" required>
+                          <ion-select-option  *ngFor="let em of earning_member_array" value="{{em}}">{{em}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && oem.invalid" class="invalid-feedback">
+                      <div *ngIf="oem.errors.required">Other earning member is required</div>
+                    </div>
+                  </ion-col>  -->
+                  <div class="single_field">
+                    <ion-row>
+                    <ion-col size="12">
+                    <div class="form_label">Other earning members</div>
+                      <ion-row>
+                        <ion-col size="6" *ngFor="let em of earning_member_array">
+                          <ion-checkbox  checked="{{em.checked}}"  (ionChange)="getCheckBoxValue($event,em.member_names)"></ion-checkbox>
+                          <ion-label style="margin-left: 10px;">{{em.member_names}}</ion-label>
+                          
+                        </ion-col>
+                      </ion-row>
+                  </ion-col>
+                </ion-row>                
+               </div>
+               <div class="single_field" *ngIf="earning_member_array.length > 0">
+                <ion-row >
+                  <ion-col size="6" *ngFor="let dynamic of earning_member_array; let i = index;">
+                    <div class="form_label">{{dynamic.member_names}}</div>
+                      <input [(ngModel)]="dynamic.value" name="test_{{dynamic.member_names}}" placeholder="{{dynamic.member_names}} Income">
+                  </ion-col>
+                  </ion-row>
+               </div>
+                  <div class="single_field">
+                    <ion-row>
+                  <!-- <ion-col size="3" *ngIf="earning_val=='Siblings'">
+                    <div class="form_label">Diagnosis</div>
+                      <input [(ngModel)]="salary_earning" name="salary_earning" placeholder="Siblings Income" >
+                  </ion-col>
+                  <ion-col size="3"  *ngIf="earning_val=='Parents'">
+                    <div class="form_label">Diagnosis</div>
+                      <input [(ngModel)]="salary_earning" name="salary_earning" placeholder="" >
+                  </ion-col>
+                  <ion-col size="3" *ngIf="earning_val=='Offsprings'">
+                    <div class="form_label">Diagnosis</div>
+                      <input [(ngModel)]="salary_earning" name="salary_earning" placeholder="" >
+                  </ion-col>
+                  <ion-col size="3" *ngIf="earning_val=='Spouse'">
+                    <div class="form_label">Diagnosis</div>
+                      <input [(ngModel)]="salary_earning" name="salary_earning" placeholder="" >
+                  </ion-col> -->
+                  <!-- <ion-col size="12">
+                    <div class="form_label">Other earning members</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Income Earning Member</ion-label>
+                      <ion-select [(ngModel)]="income_e_member"  name="income_e_member" #iem="ngModel" [ngClass]="{ 'is-invalid': f.submitted && iem.invalid }" required>
+                        <ion-select-option *ngFor="let emi of earning_member_income_array" value="{{emi}}">{{emi}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && iem.invalid" class="invalid-feedback">
+                      <div *ngIf="iem.errors.required">Income earning member is required</div>
+                    </div>
+                  </ion-col> -->
+                  <ion-col size="12">
+                    <div class="form_label">Diagnosis</div>
+                      <textarea [(ngModel)]="diagnosis"  rows="4" cols="35"   name="diagnosis" placeholder="" #dia="ngModel" [ngClass]="{ 'is-invalid': f.submitted && dia.invalid }" required></textarea>
+                      <div *ngIf="f.submitted && dia.invalid" class="invalid-feedback">
+                        <div *ngIf="dia.errors.required">Diagnosis is required</div>
+                      </div>
+                  </ion-col>
+                </ion-row>                
+               </div>
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Duration of illness</div>
+                    <input [(ngModel)]="illness_duration"  name="illness_duration" placeholder="in months" #doi="ngModel" [ngClass]="{ 'is-invalid': f.submitted && doi.invalid }" >
+                    <div *ngIf="f.submitted && doi.invalid" class="invalid-feedback">
+                      <div *ngIf="doi.errors.required">Duration is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label">Age of onset</div>
+                      <input [(ngModel)]="onset_age"  name="onset_age" placeholder="" #oa="ngModel" [ngClass]="{ 'is-invalid': f.submitted && oa.invalid }" >
+                      <div *ngIf="f.submitted && oa.invalid" class="invalid-feedback">
+                        <div *ngIf="oa.errors.required">Onset age is required</div>
+                      </div>
+                  </ion-col>
+                </ion-row>                
+               </div>
+              <div class="single_field" style="text-align: center;">
+                <input type="hidden" [(ngModel)]="btn_2" name="btn_2">
+                <ion-button (click)="previous_stage('step-1')" class="theme_btn" type="submit">
+                  Previous
+               </ion-button>
+                <ion-button class="theme_btn" type="submit">
+                   Next
+                </ion-button>
+              </div>
+            </diV>
+            <diV  *ngSwitchCase="'step-3'">
+              <div class="single_field">                
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">MI in family</div>
+                     <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Unassigned</ion-label>
+                        <ion-select [(ngModel)]="mi_family"  name="mi_family" #mi="ngModel" [ngClass]="{ 'is-invalid': f.submitted && mi.invalid }">
+                          <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                       </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && mi.invalid" class="invalid-feedback">
+                      <div *ngIf="mi.errors.required">MI family is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label">Relationship with patient</div>
+                     <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Relationship With Patient</ion-label>
+                        <ion-select [(ngModel)]="relation_with_patient"   name="relation_with_patient" #rwp="ngModel" [ngClass]="{ 'is-invalid': f.submitted && rwp.invalid }" required (ionChange)="getSelectedValue($event)">
+                          <ion-select-option *ngFor="let pr of relation_with_patient_array" value="{{pr}}">{{pr}}</ion-select-option>
+                       </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && rwp.invalid" class="invalid-feedback">
+                      <div *ngIf="rwp.errors.required">Relation is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col *ngIf="rl_w_patient == 'Other'" size="6">
+                    <div class="form_label">Description</div>
+                    <input  [(ngModel)]="rl_with_p_other"    name="rl_with_p_other" #rl_oth="ngModel" [ngClass]="{ 'is-invalid': f.submitted && rl_oth.invalid }" required>
+                    <div *ngIf="f.submitted && rl_oth.invalid" class="invalid-feedback">
+                      <div *ngIf="rl_oth.errors.required">Description is required</div>
+                    </div>
+                  </ion-col>
+                </ion-row>                 
+               </div>
+               <h3 class="form_section__head_custom">Suicide Related Information </h3>
+               <div class="single_field">                
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Suicide committed by family member</div>
+                     <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Unassigned</ion-label>
+                        <ion-select [(ngModel)]="suicide_commited"   name="suicide_commited" (ionChange)="suicideChange($event)" #sc="ngModel" [ngClass]="{ 'is-invalid': f.submitted && sc.invalid }" required>
+                          <ion-select-option  *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                       </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && sc.invalid" class="invalid-feedback">
+                      <div *ngIf="sc.errors.required">Suicide committed is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label">Which family member</div>
+                     <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Which Family Member</ion-label>
+                        <ion-select [(ngModel)]="which_member"   name="which_member" disabled="{{isSuicideDisabled}}">
+                          <ion-select-option  *ngFor="let wm of which_member_array" value="{{wm}}">{{wm}}</ion-select-option>
+                       </ion-select>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>                 
+               </div>
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Type of suicide attempt</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Type Of Suicide Attempt</ion-label>
+                      <ion-select [(ngModel)]="suicide_type"  name="suicide_type" disabled="{{isSuicideDisabled}}">
+                          <ion-select-option *ngFor="let sta of suicide_type_array" value="{{sta}}">{{sta}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>                
+               </div>
+               <h3 class="form_section__head_custom">Treatment Received Earlier </h3>
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Treatment received earlier</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Treatment Received Earlier</ion-label>
+                      <ion-select [(ngModel)]="earlier_treatment"  name="earlier_treatment" (ionChange)="changeTreatment($event)" #et="ngModel" [ngClass]="{ 'is-invalid': f.submitted && et.invalid }" required>
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && et.invalid" class="invalid-feedback">
+                      <div *ngIf="et.errors.required">Treatment received is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label">Treatment source</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Treatment Source</ion-label>
+                      <ion-select  multiple="true" [(ngModel)]="treatment_source"  name="treatment_source" disabled="{{isTreatDisabled}}">
+                          <ion-select-option *ngFor="let ts of treatment_source_array" value="{{ts}}">{{ts}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                   
+                  </ion-col>
+                </ion-row>                
+               </div>
+               
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Pt. disability certificate </div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Disability Certificate</ion-label>
+                      <ion-select [(ngModel)]="disability_certificate"  name="disability_certificate" #disabile="ngModel" [ngClass]="{ 'is-invalid': f.submitted && disabile.invalid }">
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && disabile.invalid" class="invalid-feedback">
+                      <div *ngIf="disabile.errors.required">Disability certificate is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label">Home </div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Home</ion-label>
+                      <ion-select [(ngModel)]="home"  name="home" #ho="ngModel" [ngClass]="{ 'is-invalid': f.submitted && ho.invalid }">
+                        <ion-select-option *ngFor="let ha of home_array" value="{{ha}}">{{ha}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && ho.invalid" class="invalid-feedback">
+                      <div *ngIf="ho.errors.required">Home is required</div>
+                    </div>
+                  </ion-col>
+                </ion-row>                
+               </div>
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Roof </div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Roof</ion-label>
+                      <ion-select [(ngModel)]="roof"  name="roof" #ro="ngModel" [ngClass]="{ 'is-invalid': f.submitted && ro.invalid }" >
+                        <ion-select-option *ngFor="let ra of roof_array" value="{{ra}}">{{ra}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && ro.invalid" class="invalid-feedback">
+                      <div *ngIf="ro.errors.required">Roof is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label">Distance of drinking water </div>
+                    <ion-item lines="none" class="login_role_select" >
+                      <ion-label class="role_label">Select Distance Of Drinking Water</ion-label>
+                      <ion-select [(ngModel)]="drinking_distance"  name="drinking_distance" #dd="ngModel" [ngClass]="{ 'is-invalid': f.submitted && dd.invalid }" >
+                        <ion-select-option *ngFor="let dda of drinking_distance_array" value="{{dda}}">{{dda}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && dd.invalid" class="invalid-feedback">
+                      <div *ngIf="dd.errors.required">Distance is required</div>
+                    </div>
+                  </ion-col>
+                </ion-row>                
+               </div>
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Pt. aadhar card</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Aadhar Card</ion-label>
+                      <ion-select [(ngModel)]="aadhar_card"  name="aadhar_card" #adhar="ngModel" [ngClass]="{ 'is-invalid': f.submitted && adhar.invalid }">
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && adhar.invalid" class="invalid-feedback">
+                      <div *ngIf="adhar.errors.required">Aadhar card is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label">Pt. ration card</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Ration Card</ion-label>
+                      <ion-select [(ngModel)]="ration_card"  name="ration_card" #ration="ngModel" [ngClass]="{ 'is-invalid': f.submitted && ration.invalid }">
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && ration.invalid" class="invalid-feedback">
+                      <div *ngIf="ration.errors.required">Ration card is required</div>
+                    </div>
+                  </ion-col>
+                </ion-row>                
+               </div>
+               <div class="single_field">
+                 <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Pt. election id</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Election ID</ion-label>
+                      <ion-select [(ngModel)]="election_id"  name="election_id" #elect="ngModel" [ngClass]="{ 'is-invalid': f.submitted && elect.invalid }" >
+                          <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && elect.invalid" class="invalid-feedback">
+                      <div *ngIf="elect.errors.required">Election id is required</div>
+                    </div>
+                  </ion-col>
+                 </ion-row>
+               </div>
+              <div class="single_field" style="text-align: center;">
+                <input type="hidden" [(ngModel)]="btn_3" name="btn_3">
+                <ion-button (click)="previous_stage('step-2')" class="theme_btn" type="submit">
+                  Previous
+               </ion-button>
+                <ion-button class="theme_btn" type="submit">
+                   Next
+                </ion-button>
+              </div>
+            </diV>
+            <diV  *ngSwitchCase="'step-4'">
+              <div class="single_field">                
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Source of drinking water</div>
+                     <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Source Of Drinking Water</ion-label>
+                        <ion-select [(ngModel)]="drinking_water_source"   name="drinking_water_source" #sdw="ngModel" [ngClass]="{ 'is-invalid': f.submitted && sdw.invalid }" >
+                          <ion-select-option *ngFor="let dds of drinking_water_source_array" value="{{dds}}">{{dds}}</ion-select-option>
+                       </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && sdw.invalid" class="invalid-feedback">
+                      <div *ngIf="sdw.errors.required">Source is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label">Toilet facility</div>
+                     <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Toilet Facility</ion-label>
+                        <ion-select [(ngModel)]="toilet_facility"   name="toilet_facility" #tf="ngModel" [ngClass]="{ 'is-invalid': f.submitted && tf.invalid }">
+                          <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                       </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && tf.invalid" class="invalid-feedback">
+                      <div *ngIf="tf.errors.required">Toilet facility is required</div>
+                    </div>
+                  </ion-col>
+                </ion-row>                 
+               </div>
+               <div class="single_field">                
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Gas Connection</div>
+                     <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Gas Connection</ion-label>
+                        <ion-select [(ngModel)]="gas_connection"   name="gas_connection" #gc="ngModel" [ngClass]="{ 'is-invalid': f.submitted && gc.invalid }">
+                          <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                       </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && gc.invalid" class="invalid-feedback">
+                      <div *ngIf="gc.errors.required">Gas connection is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label">Vehicle</div>
+                     <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Vehicle</ion-label>
+                        <ion-select [(ngModel)]="vehicle"   name="vehicle" #veh="ngModel" [ngClass]="{ 'is-invalid': f.submitted && veh.invalid }">
+                          <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                       </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && veh.invalid" class="invalid-feedback">
+                      <div *ngIf="veh.errors.required">Vehicle is required</div>
+                    </div>
+                  </ion-col>
+                </ion-row>                 
+               </div>
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Mobile phone</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Mobile Phone</ion-label>
+                      <ion-select [(ngModel)]="mobile_phone"  name="mobile_phone" #mob="ngModel" [ngClass]="{ 'is-invalid': f.submitted && mob.invalid }" >
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && mob.invalid" class="invalid-feedback">
+                      <div *ngIf="mob.errors.required">Mobile phone is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label">Land phone</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Land Phone</ion-label>
+                      <ion-select [(ngModel)]="land_phone"  name="land_phone" #land="ngModel" [ngClass]="{ 'is-invalid': f.submitted && land.invalid }">
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && land.invalid" class="invalid-feedback">
+                      <div *ngIf="land.errors.required">Land phone is required</div>
+                    </div>
+                  </ion-col>
+                </ion-row>                
+               </div>
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">TV</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select TV</ion-label>
+                      <ion-select [(ngModel)]="tv"  name="tv" #tvs="ngModel" [ngClass]="{ 'is-invalid': f.submitted && tvs.invalid }">
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && tvs.invalid" class="invalid-feedback">
+                      <div *ngIf="tvs.errors.required">TV is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label">Fridge</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Fridge</ion-label>
+                      <ion-select [(ngModel)]="fridge"  name="fridge" #fri="ngModel" [ngClass]="{ 'is-invalid': f.submitted && fri.invalid }">
+                          <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && fri.invalid" class="invalid-feedback">
+                      <div *ngIf="fri.errors.required">Fridge is required</div>
+                    </div>
+                  </ion-col>
+                </ion-row>                
+               </div>
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Food kit </div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Food Kit</ion-label>
+                      <ion-select [(ngModel)]="food_kit"  name="food_kit" #fk="ngModel" [ngClass]="{ 'is-invalid': f.submitted && fk.invalid }">
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && fk.invalid" class="invalid-feedback">
+                      <div *ngIf="fk.errors.required">Food kit is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label">Financial help</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Financial Help</ion-label>
+                      <ion-select [(ngModel)]="financial_help"  name="financial_help" #help="ngModel" [ngClass]="{ 'is-invalid': f.submitted && help.invalid }">
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && help.invalid" class="invalid-feedback">
+                      <div *ngIf="help.errors.required">Financial help is required</div>
+                    </div>
+                  </ion-col>
+                </ion-row>                
+               </div>
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Kits on spl. occasions </div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select kits On Spl. Occasions</ion-label>
+                      <ion-select [(ngModel)]="kits_occasion"  name="kits_occasion" #kits="ngModel" [ngClass]="{ 'is-invalid': f.submitted && kits.invalid }">
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && kits.invalid" class="invalid-feedback">
+                      <div *ngIf="kits.errors.required">Kits is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">                    
+                    <ion-row>
+                      <ion-col size="6">
+                        <div class="form_label">Govt pension </div>
+                        <ion-item lines="none" class="login_role_select">
+                          <ion-label class="role_label">Unassigned</ion-label>
+                          <ion-select [(ngModel)]="pension" name="pension" #gov="ngModel" [ngClass]="{ 'is-invalid': f.submitted && gov.invalid }" required (ionChange)="changeGovt($event)">
+                            <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                          </ion-select>
+                        </ion-item>
+                        <div *ngIf="f.submitted && gov.invalid" class="invalid-feedback">
+                          <div *ngIf="gov.errors.required">Govt pension is required</div>
+                        </div>
+                      </ion-col>
+                      <ion-col size="6">
+                        <div class="form_label">Type of pension </div>
+                        <input [(ngModel)]="pension_type" disabled="{{isGovtDisabled}}" name="pension_type"  placeholder="">
+                      </ion-col>
+                    </ion-row>      
+                  </ion-col>
+                </ion-row>                
+               </div>
+               <div class="single_field">
+                <ion-row>
+                  <ion-col size="6">
+                    <div class="form_label">Health care </div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Health Care</ion-label>
+                      <ion-select [(ngModel)]="health_care"  name="health_care" #heal="ngModel" [ngClass]="{ 'is-invalid': f.submitted && heal.invalid }" required>
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && heal.invalid" class="invalid-feedback">
+                      <div *ngIf="heal.errors.required">Health care is required</div>
+                    </div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <div class="form_label">Medicines</div>
+                    <ion-item lines="none" class="login_role_select">
+                      <ion-label class="role_label">Select Medicines</ion-label>
+                      <ion-select [(ngModel)]="medicines"  name="medicines" #med="ngModel" [ngClass]="{ 'is-invalid': f.submitted && med.invalid }" required>
+                        <ion-select-option *ngFor="let y of yes_no_array" value="{{y}}">{{y}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div *ngIf="f.submitted && med.invalid" class="invalid-feedback">
+                      <div *ngIf="med.errors.required">Medicine is required</div>
+                    </div>
+                  </ion-col>
+                </ion-row>                
+               </div>
+              <div class="single_field" style="text-align: center;">
+                <input type="hidden" [(ngModel)]="btn_4" name="btn_4">
+                <ion-button (click)="previous_stage('step-3')" class="theme_btn" type="submit">
+                  Previous
+               </ion-button>
+                <ion-button class="theme_btn" id="submit_butn" type="submit">
+                   Submit
+                </ion-button>
+              </div>
+            </diV>       
+          </form>
+        </div>      
+    </div>
+  </div>
+</ion-content>

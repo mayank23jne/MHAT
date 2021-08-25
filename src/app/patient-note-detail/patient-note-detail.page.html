@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+    <ion-title>Follow Up Notes</ion-title>
+    <ion-icon routerLink="/notes/{{patient_id}}" *ngIf="role!='doctor'" class="add_medicine" name="add-circle-outline"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" >
+  <div *ngIf="note_list.length > 0">
+    <ion-card *ngFor="let note of note_list; let i = index">
+      <img class="note_detail_img" *ngIf="note.imageName" src="{{fileURI}}{{note.imageName}}" />
+      <ion-card-header>
+        <ion-card-subtitle>{{note.entryDate}}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content *ngIf="note.description">
+        {{note.description}}
+      </ion-card-content>
+      <ion-card-content *ngIf="note.audioName">
+        <audio controls class="recording_div" >
+          <source src="{{fileURI}}{{note.audioName}}" type="audio/mpeg">
+        </audio>
+      </ion-card-content>
+      <ion-row class="doc_row" *ngIf="note.fileName">
+        <ion-col size="4">
+          Document - 
+        </ion-col>
+        <ion-col size="6">
+          <img class="" (click)="download(note.fileName)" src="assets/images/attach.png" />
+        </ion-col>
+      </ion-row>
+      
+    </ion-card>
+</div>
+<div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+</ion-content>

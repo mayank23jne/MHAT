@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Doctors</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="patient_add_btn" routerLink="/add-doctor"><ion-icon name="add-outline"></ion-icon></div>
+  <div class="ion-padding">
+    <ion-searchbar   placeholder="Search by name:"  (keyup)="searchByKeyword($event)"></ion-searchbar>
+    <ion-list *ngIf="doctor_list.length > 0">
+      <ion-list-header>
+        Doctor list ({{doctor_list.length}})
+      </ion-list-header>
+      <ion-item *ngFor="let doctor of doctor_list; let i = index">
+        <ion-avatar slot="start">          
+          <img *ngIf="!doctor.profile_image" src="assets/images/user.png">
+          <img *ngIf="doctor.profile_image" src="{{baseURI}}{{doctor.profile_image}}">
+        </ion-avatar>
+        <ion-label>
+          <p>Sno. - {{i+1}}</p>
+          <h2 class="captial">{{doctor.full_name}}</h2>
+          <h3>Created By : Admin</h3>
+          <h3>On Date : {{doctor.entryDate}}</h3>
+          <ion-button shape="round" fill="outline" color="success" routerLink="/upload-doctor-signature/{{doctor.id}}">Upload Signature</ion-button>
+          <ion-icon  class="patient_edit_icon" (click)="deleteDoctorById(doctor.id)" name="trash-outline"></ion-icon> 
+          <ion-icon routerLink="/edit-doctor/{{doctor.id}}" class="patient_edit_icon edit_icon_custom" name="create-outline"></ion-icon>
+        </ion-label>
+      </ion-item>     
+    </ion-list>
+    <div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+  </div>
+  
+</ion-content>

@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Profile Apporval Request</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" >
+  <div *ngIf="request.length > 0">
+    <ion-card *ngFor="let req of request; let i = index" routerLink="/profile-log-detail/{{req.id}}/{{req.profile_id}}">     
+      <ion-card-header>
+        <ion-card-title class="font_16"><span class="captial">{{req.role}}</span> has updated his profile and requested for your approval.</ion-card-title>
+        <ion-card-subtitle>{{req.created_date}}</ion-card-subtitle>
+      </ion-card-header>     
+    </ion-card>
+</div>
+<div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+</ion-content>
+

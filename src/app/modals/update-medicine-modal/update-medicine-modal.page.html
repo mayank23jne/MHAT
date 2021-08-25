@@ -1,0 +1,30 @@
+<ion-content>
+  <h3 class="center">Update Medicine</h3>
+  <ion-icon class="close_model" (click)="closeModal()" name="close"></ion-icon>
+  <div class="ion-padding">
+    <div class="form">
+      <form name="form" id="p_form" (ngSubmit)="f.form.valid && addMedicineForm(f)" #f="ngForm" method="post">
+        <div class="single_field">
+          <ion-label >Medicine</ion-label>
+            <input [(ngModel)]="pres_data.name" #medicine="ngModel" [ngClass]="{ 'is-invalid': f.submitted && medicine.invalid }" required    name="medicine_name" placeholder="Enter medicine name">
+             <div *ngIf="f.submitted && medicine.invalid" class="invalid-feedback">
+                  <div *ngIf="medicine.errors.required">Medicine name is required</div>
+              </div>
+        </div>
+        <div class="single_field">
+          <p>Note* - Add more than one unit with comma seperated.</p>
+          <ion-label >Unit</ion-label>
+            <input [(ngModel)]="pres_data.units" #unit="ngModel" [ngClass]="{ 'is-invalid': f.submitted && unit.invalid }" required   name="unit_name" placeholder="Enter unit (eg. 10mg,20mg)">
+             <div *ngIf="f.submitted && unit.invalid" class="invalid-feedback">
+                  <div *ngIf="unit.errors.required">Unit is required</div>
+              </div>
+        </div>
+        <div class="single_field" style="text-align: center;">
+          <ion-button class="theme_btn" type="submit">
+             Update Medicine
+          </ion-button>
+        </div>
+      </form>
+      </div>
+  </div>
+  </ion-content>

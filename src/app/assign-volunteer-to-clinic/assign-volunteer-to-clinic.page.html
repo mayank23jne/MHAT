@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Assign Volunteer List</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="patient_add_btn" routerLink="/assign-volunteer-clinic"><ion-icon name="add-outline"></ion-icon></div>
+  <div class="ion-padding">
+    <ion-searchbar   placeholder="Search by clinic name:"  (keyup)="searchByKeyword($event)"></ion-searchbar>
+    <ion-list *ngIf="volunteer_list.length > 0">
+      <ion-list-header>
+        Assign Volunteer list
+      </ion-list-header>
+      <ion-item *ngFor="let volunteer of volunteer_list; let i = index">
+        <ion-avatar slot="start">          
+          <img src="assets/images/user.png">
+        </ion-avatar>
+        <ion-label>
+          <p>Sno. - {{i+1}}</p>
+          <h2 class="captial">{{volunteer.volunteer_name}}</h2>
+          <h3>Clinic : {{volunteer.clinic_name}}</h3>
+          <ion-icon  class="patient_edit_icon" (click)="deleteVolunteerById(volunteer.id)" name="trash-outline"></ion-icon> 
+          <!-- <ion-icon routerLink="/doctor-details/{{doctor.id}}" class="patient_edit_icon" name="create-outline"></ion-icon> -->
+        </ion-label>
+      </ion-item>     
+    </ion-list>
+    <div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+  </div>
+  
+</ion-content>

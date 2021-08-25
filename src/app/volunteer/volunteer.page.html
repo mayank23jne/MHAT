@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Volunteer</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="patient_add_btn" routerLink="/volunteer-add"><ion-icon name="add-outline"></ion-icon></div>
+  <div class="ion-padding">
+    <!-- <ion-searchbar  placeholder="Search by name:" (search)="searchByKeyword($event)"></ion-searchbar> -->
+    <ion-list *ngIf="volunteer_list.length > 0">
+      <ion-list-header>
+        Volunteer list ({{volunteer_list.length}})
+      </ion-list-header>
+      <ion-item *ngFor="let volunteer of volunteer_list; let i = index">
+        <ion-avatar slot="start">          
+          <img *ngIf="!volunteer.profile_image" src="assets/images/user.png">
+          <img *ngIf="volunteer.profile_image" src="{{baseURI}}{{volunteer.profile_image}}">
+        </ion-avatar>
+        <ion-label>
+          <p>Sno. - {{i+1}}</p>
+          <h2 class="captial">{{volunteer.full_name}}</h2>
+          <h3 *ngIf="volunteer.user_role=='clinicadmin'">Created By : Admin</h3>
+          <h3 *ngIf="volunteer.user_role!='clinicadmin'">Created By : {{volunteer.user_created_by}}</h3>
+          <h3>On Date : {{volunteer.entryDate}}</h3>
+          <h3>Status : <b *ngIf="volunteer.status==1">Active</b><b *ngIf="volunteer.status==0 && role!='clinicadmin'">Pending</b></h3>
+          <!-- <ion-icon  class="patient_edit_icon" (click)="deleteVolunteerById(volunteer.id)" name="trash-outline"></ion-icon>  -->
+          <ion-button *ngIf="volunteer.status==0 && role=='clinicadmin'" (click)="changeVolunteerStatus(volunteer.id)" shape="round" fill="outline"   class="theme_color custom_btn">Pending</ion-button>
+          <!-- <ion-icon routerLink="/doctor-details/{{doctor.id}}" class="patient_edit_icon" name="create-outline"></ion-icon> -->
+          <ion-button shape="round" routerLink="/assigned-patient-list/{{volunteer.id}}" *ngIf="volunteer.status==1"  class="custom_btn" fill="outline">View Assigned Patient</ion-button>
+        </ion-label>
+      </ion-item>     
+    </ion-list>
+    <div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+  </div>
+  
+</ion-content>

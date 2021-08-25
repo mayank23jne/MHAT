@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+    <ion-title>Schedule Appointmant</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <p class="center theme_color clinic_head captial">{{patient_name.name}}</p>
+    <div class="form">
+	  <form name="form" id="p_form" (ngSubmit)="f.form.valid && patientAppointmentForm(f)" #f="ngForm" method="post">
+      <!-- <div class="single_field">
+        <div class="form_label">Doctor</div>
+        <ion-item lines="none" class="login_role_select">
+          <ion-label class="role_label">Select Doctor</ion-label>
+          <ion-select [(ngModel)]="doctor_id" #genders="ngModel" [ngClass]="{ 'is-invalid': f.submitted && genders.invalid }" required   name="doctor_id">
+              <ion-select-option  *ngFor="let doctors of doctor_list" value="{{doctors.doctor_user_id}}" >{{doctors.doctor_name}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="f.submitted && genders.invalid" class="invalid-feedback">
+            <div *ngIf="genders.errors.required">Doctor is required</div>
+        </div>
+      </div> -->
+      <div *ngIf="booked_time.length > 0">
+        <p class="center" style="color: red;">Below slots are already booked.</p>
+        <ion-row>
+          <ion-col style="background: #d7d8da;padding: 8px;" size="3" *ngFor="let b of booked_time;">
+            <p style="font-size: 13px;line-height: 0px;">{{b.time}}</p>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div class="single_field">
+        <ion-item >
+          <ion-label>Appointment Date</ion-label>
+          <ion-input class="testing_input"  [(ngModel)]="selectedDate" name="myDate_new" (ionChange)="getScheduleTime($event)" (click)="myFun()"></ion-input>
+        </ion-item>
+      </div>
+      <div class="single_field">
+        <!-- <ion-item *ngIf="check_browser=='yes'" (click)="showTimepicker()">
+          <ion-label>Appointment Time</ion-label>
+          <p>{{myTime}}<p> 
+        </ion-item> -->
+        <ion-item *ngIf="new_patient!=0">
+          <ion-label>Appointment Time</ion-label>
+          <ion-datetime class="date_time_custom" displayFormat="HH:mm"  minuteValues="0,20,40" (ionChange)="getTime($event)" placeholder="Select Time"></ion-datetime>
+        </ion-item>
+        <ion-item *ngIf="new_patient==0">
+          <ion-label>Appointment Time</ion-label>
+          <ion-datetime class="date_time_custom" displayFormat="HH:mm"  minuteValues="0" (ionChange)="getTime($event)" placeholder="Select Time"></ion-datetime>
+        </ion-item>
+      </div>
+      <div class="single_field" style="text-align: center;">
+        <ion-button class="theme_btn" type="submit">
+          Save
+        </ion-button>
+      </div>
+    </form>
+    </div>
+  </div>
+</ion-content>

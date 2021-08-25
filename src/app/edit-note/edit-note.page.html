@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+    <ion-title>Edit Additional Information</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <p class="center theme_color clinic_head" *ngIf="patient_name">{{patient_name.name}}</p>
+    <div class="form">
+	  <form name="form" id="p_form" >
+      <div class="single_field">
+        <div class="form_label">Information</div>
+        <textarea [(ngModel)]="desc" rows="6" cols="35"  [(ngModel)]="notes.description" name="notes" placeholder="Enter information"></textarea>
+      </div>
+      <div class="single_field">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="4">
+              <ion-icon class="note_icon" (click)="choosefile()" name="attach-outline"></ion-icon>
+            </ion-col>
+            <ion-col size="4">
+              <ion-icon class="note_icon" (click)="presentActionSheet()" name="camera-outline"></ion-icon>
+            </ion-col>
+            <ion-col size="4">
+              <ion-icon class="note_icon" (click)="captureaudio()" name="mic-outline"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-grid>   
+		  </div>
+      <div class="single_field" style="text-align: center;">
+        <ion-button class="theme_btn" (click)="submit()" >
+           Submit
+        </ion-button>
+      </div>
+    </form>
+    </div>
+  </div>
+</ion-content>

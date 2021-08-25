@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Volunteer Appointment</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <ion-segment value="upcoming" [(ngModel)]="type" (ionChange)="segmentChanged($event)">
+      <ion-segment-button value="upcoming">
+        <ion-label>Upcoming Visit</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="visit">
+        <ion-label>Visit History</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+  <div [ngSwitch]="type">
+    <span *ngSwitchCase="'upcoming'" >
+      <ion-list *ngIf="upcoming_list.length > 0">
+        <ion-list-header>
+          Upcoming List
+        </ion-list-header>
+        <ion-item *ngFor="let list of upcoming_list; let i = index">
+          <ion-avatar slot="start">          
+            <img src="assets/images/user.png">
+          </ion-avatar>
+          <ion-label>
+            <p>Sno. - {{i+1}}</p>
+            <h2 class="captial">{{list.patient_name}} ({{list.file_no}})</h2>
+            <h3 *ngIf="list.full_name!=''">Assigned To : {{list.full_name}}</h3>
+            <h3 *ngIf="list.full_name==''">Assigned To : {{list.short_name}}</h3>
+            <h3>Date : {{list.ondate}}</h3>
+            <h3>Time : {{list.ontime}}</h3>
+          </ion-label>
+        </ion-item>     
+      </ion-list>
+      <div *ngIf="error_m!=''" class="error_msg">{{error_m}}</div>
+    </span>
+  </div>
+</ion-content>

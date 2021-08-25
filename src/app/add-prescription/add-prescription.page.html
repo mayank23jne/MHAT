@@ -1,0 +1,196 @@
+<ion-header>
+  <ion-toolbar class="custom_header">
+    <ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+    <ion-title>Add Prescription</ion-title>
+    <ion-icon (click)="openModal()" class="add_medicine" name="add-circle-outline"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <p class="center theme_color clinic_head captial">{{patient_name.name}}</p>
+    <div class="form">
+	  <form name="form" id="p_form" (ngSubmit)="f.form.valid && addPrescriptionForm(f)" #f="ngForm" method="post">
+      <div class="single_field">
+        <div class="form_label">Prescription</div>
+        <ion-item lines="none" class="login_role_select">
+          <ion-label class="role_label">Select Prescription</ion-label>
+          <ionic-selectable [(ngModel)]="pre_name"  #p_name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && p_name.invalid }" required [items]="prescription" itemValueField="id" itemTextField="name" [canSearch]="true" (onChange)="prescriptionChange($event)" name="pre_name">
+          </ionic-selectable>
+        </ion-item>
+        <div *ngIf="f.submitted && p_name.invalid" class="invalid-feedback">
+                <div *ngIf="p_name.errors.required">Prescription is required</div>
+            </div>
+        </div>
+      <div class="single_field">
+        <div class="form_label">Dosage Type</div>
+        <ion-item lines="none" class="login_role_select">
+          <ion-label class="role_label">Select Dosage Type</ion-label>
+          <ion-select [(ngModel)]="dose" #dosage="ngModel" [ngClass]="{ 'is-invalid': f.submitted && dosage.invalid }" required   name="dose">
+              <ion-select-option value="Tab" >Tablet</ion-select-option>
+              <ion-select-option value="Syrup" >Syrup</ion-select-option>
+              <ion-select-option value="Injection" >Injection</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="f.submitted && dosage.invalid" class="invalid-feedback">
+            <div *ngIf="dosage.errors.required">Dosage type is required</div>
+        </div>
+      </div>
+      <div class="single_field">
+        <div class="form_label">Medicine Units</div>
+        <ion-item lines="none" class="login_role_select">
+          <ion-label class="role_label">Select Medicine Units</ion-label>
+          <ion-select [(ngModel)]="m_unit" #unit="ngModel" [ngClass]="{ 'is-invalid': f.submitted && unit.invalid }" required   name="m_unit">
+              <ion-select-option *ngFor="let units of medicineunits" [value]="units">{{ units }}</ion-select-option>
+           </ion-select>
+        </ion-item>
+        <div *ngIf="f.submitted && unit.invalid" class="invalid-feedback">
+            <div *ngIf="unit.errors.required">Medicine units is required</div>
+        </div>
+      </div>
+      <div class="single_field">
+        <div class="form_label">Select Plan Type</div>
+        <ion-item lines="none" class="login_role_select">
+          <ion-label class="role_label">Select Plan Type</ion-label>
+          <ion-select [(ngModel)]="plan_type" #p_type="ngModel" [ngClass]="{ 'is-invalid': f.submitted && p_type.invalid }" required   name="plan_type" (ionChange)="selectPlanType($event)">
+              <ion-select-option value="daily">Daily</ion-select-option>
+              <ion-select-option value="1 week">Weekly</ion-select-option>
+              <ion-select-option value="2 weeks">Bi-Weekly</ion-select-option>
+              <ion-select-option value="3 weeks">Tri-Weekly</ion-select-option>
+              <ion-select-option value="4 weeks">Four-Weekly</ion-select-option>
+              <ion-select-option value="monthly">Monthly</ion-select-option>
+           </ion-select>
+        </ion-item>
+        <div *ngIf="f.submitted && p_type.invalid" class="invalid-feedback">
+            <div *ngIf="p_type.errors.required">Plan type is required</div>
+        </div>
+      </div>
+      <div class="single_field" *ngIf="plan_type_name == '1 week' || plan_type_name == '2 weeks' || plan_type_name == '3 weeks' || plan_type_name == '4 weeks' || plan_type_name == 'monthly'">
+        <div class="form_label">Weekly Plan</div>
+      <ion-row>
+        <ion-col size="12">
+          <ion-label></ion-label>
+            <ion-item lines="none" class="login_role_select">
+              <ion-select [(ngModel)]="d_1" #d1="ngModel" [ngClass]="{ 'is-invalid': f.submitted && d1.invalid }" required   name="d_1">
+                  <ion-select-option value="0" >0</ion-select-option>
+                  <ion-select-option value="Once" >Once</ion-select-option>
+                  <ion-select-option value="Twice" >Twice</ion-select-option>
+                  <ion-select-option value="Three times" >Three times</ion-select-option>
+                  <ion-select-option value="Four times" >Four times</ion-select-option>
+                  <ion-select-option value="Five times" >Five times</ion-select-option>
+                  <ion-select-option value="Six times" >Six times</ion-select-option>
+                  <ion-select-option value="Seven times" >Seven times</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <div *ngIf="f.submitted && d1.invalid" class="invalid-feedback">
+                <div *ngIf="d1.errors.required">Weekly plan is required</div>
+            </div>
+        </ion-col>
+      </ion-row>
+      
+    </div>
+      <div class="single_field" *ngIf="plan_type_name == 'daily'">
+        <div class="form_label">Daily Plan</div>
+      <ion-row>
+        <ion-col size="4">
+            <ion-item lines="none" class="login_role_select">
+              <ion-select [(ngModel)]="plan_1" #p1="ngModel" [ngClass]="{ 'is-invalid': f.submitted && p1.invalid }" required   name="plan_1">
+                  <ion-select-option value="0" >0</ion-select-option>
+                  <ion-select-option value="1/2" >1/2</ion-select-option>
+                  <ion-select-option value="1" >1</ion-select-option>
+                  <ion-select-option value="2" >2</ion-select-option>
+                  <ion-select-option value="3" >3</ion-select-option>
+                  <ion-select-option value="4" >4</ion-select-option>
+                  <ion-select-option value="1 SOS" >1 SOS</ion-select-option>
+                  <ion-select-option value="1/2 SOS" >1/2 SOS</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <div *ngIf="f.submitted && p1.invalid" class="invalid-feedback">
+                <div *ngIf="p1.errors.required">Daily plan is required</div>
+            </div>
+        </ion-col>
+        <ion-col  size="4">
+          <ion-item lines="none" class="login_role_select">
+            <ion-select [(ngModel)]="plan_2" #p_2="ngModel" [ngClass]="{ 'is-invalid': f.submitted && p_2.invalid }" required   name="plan_2">
+              <ion-select-option value="0" >0</ion-select-option>
+              <ion-select-option value="1/2" >1/2</ion-select-option>
+              <ion-select-option value="1" >1</ion-select-option>
+              <ion-select-option value="2" >2</ion-select-option>
+              <ion-select-option value="3" >3</ion-select-option>
+              <ion-select-option value="4" >4</ion-select-option>
+              <ion-select-option value="1 SOS" >1 SOS</ion-select-option>
+              <ion-select-option value="1/2 SOS" >1/2 SOS</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div *ngIf="f.submitted && p_2.invalid" class="invalid-feedback">
+              <div *ngIf="p_2.errors.required">Daily plan is required</div>
+          </div>
+        </ion-col>
+        <ion-col size="4">
+         
+
+          <ion-item lines="none" class="login_role_select">
+            <ion-select [(ngModel)]="plan_3" #p_3="ngModel"  [ngClass]="{ 'is-invalid': f.submitted && p_3.invalid }" required   name="plan_3">
+              <ion-select-option value="0" >0</ion-select-option>
+              <ion-select-option value="1/2" >1/2</ion-select-option>
+              <ion-select-option value="1" >1</ion-select-option>
+              <ion-select-option value="2" >2</ion-select-option>
+              <ion-select-option value="3" >3</ion-select-option>
+              <ion-select-option value="4" >4</ion-select-option>
+              <ion-select-option value="1 SOS" >1 SOS</ion-select-option>
+              <ion-select-option value="1/2 SOS" >1/2 SOS</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div *ngIf="f.submitted && p_3.invalid" class="invalid-feedback">
+              <div *ngIf="p_3.errors.required">Daily plan is required</div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div class="single_field" *ngIf="plan_type_name == 'daily'">
+      <div class="form_label">Duration</div>
+    <ion-row>
+      <ion-col  size="6">
+        <ion-item lines="none" class="login_role_select">
+          <ion-label class="role_label">Duration</ion-label>
+          <ion-select [(ngModel)]="durationnumber" #d_no="ngModel" [ngClass]="{ 'is-invalid': f.submitted && d_no.invalid }" required   name="durationnumber">
+              <ion-select-option *ngFor="let durat of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]"  [value]="durat" >{{durat}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="f.submitted && d_no.invalid" class="invalid-feedback">
+            <div *ngIf="d_no.errors.required">Duration number is required</div>
+        </div>
+      </ion-col>
+      <ion-col size="6">
+          <ion-item lines="none" class="login_role_select">
+            <ion-label class="role_label">Duration</ion-label>
+            <ion-select [(ngModel)]="duration" #durations="ngModel" [ngClass]="{ 'is-invalid': f.submitted && durations.invalid }" required   name="duration">
+                <ion-select-option value="days" >Day(s)</ion-select-option>
+                <ion-select-option value="weeks" >Week (s)</ion-select-option>
+                <ion-select-option value="months" >Month (s)</ion-select-option>
+                <ion-select-option value="years" >Year (s)</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div *ngIf="f.submitted && durations.invalid" class="invalid-feedback">
+              <div *ngIf="durations.errors.required">Duration is required</div>
+          </div>
+      </ion-col>
+      
+    </ion-row>
+  </div>
+      <div class="single_field">
+        <textarea [(ngModel)]="desc" rows="6" cols="35"   name="desc" placeholder="Write any special instructions to take medicine"></textarea>
+		  </div>
+      <div class="single_field" style="text-align: center;">
+        <ion-button class="theme_btn" type="submit">
+           Add Prescription
+        </ion-button>
+      </div>
+    </form>
+    </div>
+  </div>
+</ion-content>
+
+
